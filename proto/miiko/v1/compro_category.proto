@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package miiko.v1;
+
+option go_package = "proto/gen/miiko/v1";
+
+service ComproCategoryService {
+  rpc CategoryGet (google.protobuf.Empty) returns (CategoryGetResponse) {}
+  rpc CategoryPost (CategoryPostRequest) returns (google.protobuf.Empty) {}
+  rpc TopicGet (TopicGetRequest) returns (TopicGetResponse) {}
+}
+message Category {
+  string category_id = 1;
+  string category_display_name = 2;
+  string category_system_name = 3;
+  int32 category_order = 4;
+}
+message CategoryGetResponse {
+  repeated Category category_list = 1;
+}
+message CategoryPostRequest {
+  string category_id = 1;
+  Category category = 2;
+}
+message Topic {
+  string topic_id = 1;
+  string topic_display_name = 2;
+  int32 topic_order = 3;
+  repeated Problem problem_list = 4;
+}
+message TopicGetRequest {
+  string category_id = 1;
+}
+message TopicGetResponse {
+  Category category = 1;
+  repeated Topic topic_list = 2;
+}
+message Problem {
+  string problem_id = 1;
+  string url = 2;
+  string problem_display_name = 3;
+  int32 estimation = 4;
+  repeated Tag tag_list = 5;
+}
+message Tag {
+  string category_id = 1;
+  string topic_display_name = 2;
+}
