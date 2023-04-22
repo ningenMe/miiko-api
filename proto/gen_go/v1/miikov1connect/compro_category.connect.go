@@ -2,7 +2,7 @@
 //
 // Source: v1/compro_category.proto
 
-package v1connect
+package miikov1connect
 
 import (
 	context "context"

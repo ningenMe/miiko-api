@@ -4,7 +4,7 @@ import "google/protobuf/empty.proto";
 
 package miiko.v1;
 
-option go_package = "proto/gen_go/miiko/v1";
+option go_package = "proto/gen_go/miiko/v1;miikov1";
 
 service ComproCategoryService {
   rpc CategoryGet (google.protobuf.Empty) returns (CategoryGetResponse) {}
