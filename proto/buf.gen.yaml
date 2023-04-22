@@ -10,5 +10,7 @@ plugins:
     opt: target=ts
     out: gen_ts
   - plugin: connect-es
-    opt: target=ts
+    opt:
+      - target=ts
+      - import_extension=.ts
     out: gen_ts
