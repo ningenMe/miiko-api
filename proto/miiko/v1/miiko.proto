@@ -4,9 +4,9 @@ import "google/protobuf/empty.proto";
 
 package miiko.v1;
 
-option go_package = "proto/gen_go/miiko/v1;miikov1";
+option go_package = "github.com/ningenMe/miiko-api/proto/gen_go/v1;miikov1";
 
-service ComproCategoryService {
+service MiikoService {
   rpc CategoryGet (google.protobuf.Empty) returns (CategoryGetResponse) {}
   rpc CategoryPost (CategoryPostRequest) returns (google.protobuf.Empty) {}
   rpc TopicGet (TopicGetRequest) returns (TopicGetResponse) {}
