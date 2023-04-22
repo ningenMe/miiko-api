@@ -5,5 +5,5 @@
 ```shell
 cd proto
 buf lint
-buf generate
+npx buf generate miiko
 ```
