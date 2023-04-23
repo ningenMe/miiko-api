@@ -42,8 +42,6 @@ const (
 	MiikoServiceCategoryPostProcedure = "/miiko.v1.MiikoService/CategoryPost"
 	// MiikoServiceTopicGetProcedure is the fully-qualified name of the MiikoService's TopicGet RPC.
 	MiikoServiceTopicGetProcedure = "/miiko.v1.MiikoService/TopicGet"
-	// MiikoServiceHealthGetProcedure is the fully-qualified name of the MiikoService's HealthGet RPC.
-	MiikoServiceHealthGetProcedure = "/miiko.v1.MiikoService/HealthGet"
 )
 
 // MiikoServiceClient is a client for the miiko.v1.MiikoService service.
@@ -51,7 +49,6 @@ type MiikoServiceClient interface {
 	CategoryGet(context.Context, *connect_go.Request[emptypb.Empty]) (*connect_go.Response[v1.CategoryGetResponse], error)
 	CategoryPost(context.Context, *connect_go.Request[v1.CategoryPostRequest]) (*connect_go.Response[emptypb.Empty], error)
 	TopicGet(context.Context, *connect_go.Request[v1.TopicGetRequest]) (*connect_go.Response[v1.TopicGetResponse], error)
-	HealthGet(context.Context, *connect_go.Request[emptypb.Empty]) (*connect_go.Response[v1.HealthGetResponse], error)
 }
 
 // NewMiikoServiceClient constructs a client for the miiko.v1.MiikoService service. By default, it
@@ -79,11 +76,6 @@ func NewMiikoServiceClient(httpClient connect_go.HTTPClient, baseURL string, opt
 			baseURL+MiikoServiceTopicGetProcedure,
 			opts...,
 		),
-		healthGet: connect_go.NewClient[emptypb.Empty, v1.HealthGetResponse](
-			httpClient,
-			baseURL+MiikoServiceHealthGetProcedure,
-			opts...,
-		),
 	}
 }
 
@@ -92,7 +84,6 @@ type miikoServiceClient struct {
 	categoryGet  *connect_go.Client[emptypb.Empty, v1.CategoryGetResponse]
 	categoryPost *connect_go.Client[v1.CategoryPostRequest, emptypb.Empty]
 	topicGet     *connect_go.Client[v1.TopicGetRequest, v1.TopicGetResponse]
-	healthGet    *connect_go.Client[emptypb.Empty, v1.HealthGetResponse]
 }
 
 // CategoryGet calls miiko.v1.MiikoService.CategoryGet.
@@ -110,17 +101,11 @@ func (c *miikoServiceClient) TopicGet(ctx context.Context, req *connect_go.Reque
 	return c.topicGet.CallUnary(ctx, req)
 }
 
-// HealthGet calls miiko.v1.MiikoService.HealthGet.
-func (c *miikoServiceClient) HealthGet(ctx context.Context, req *connect_go.Request[emptypb.Empty]) (*connect_go.Response[v1.HealthGetResponse], error) {
-	return c.healthGet.CallUnary(ctx, req)
-}
-
 // MiikoServiceHandler is an implementation of the miiko.v1.MiikoService service.
 type MiikoServiceHandler interface {
 	CategoryGet(context.Context, *connect_go.Request[emptypb.Empty]) (*connect_go.Response[v1.CategoryGetResponse], error)
 	CategoryPost(context.Context, *connect_go.Request[v1.CategoryPostRequest]) (*connect_go.Response[emptypb.Empty], error)
 	TopicGet(context.Context, *connect_go.Request[v1.TopicGetRequest]) (*connect_go.Response[v1.TopicGetResponse], error)
-	HealthGet(context.Context, *connect_go.Request[emptypb.Empty]) (*connect_go.Response[v1.HealthGetResponse], error)
 }
 
 // NewMiikoServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -145,11 +130,6 @@ func NewMiikoServiceHandler(svc MiikoServiceHandler, opts ...connect_go.HandlerO
 		svc.TopicGet,
 		opts...,
 	))
-	mux.Handle(MiikoServiceHealthGetProcedure, connect_go.NewUnaryHandler(
-		MiikoServiceHealthGetProcedure,
-		svc.HealthGet,
-		opts...,
-	))
 	return "/miiko.v1.MiikoService/", mux
 }
 
@@ -166,8 +146,4 @@ func (UnimplementedMiikoServiceHandler) CategoryPost(context.Context, *connect_g
 
 func (UnimplementedMiikoServiceHandler) TopicGet(context.Context, *connect_go.Request[v1.TopicGetRequest]) (*connect_go.Response[v1.TopicGetResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("miiko.v1.MiikoService.TopicGet is not implemented"))
-}
-
-func (UnimplementedMiikoServiceHandler) HealthGet(context.Context, *connect_go.Request[emptypb.Empty]) (*connect_go.Response[v1.HealthGetResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("miiko.v1.MiikoService.HealthGet is not implemented"))
 }

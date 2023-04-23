@@ -41,12 +41,3 @@ func (s *MiikoController) TopicGet(
 ) (*connect.Response[miikov1.TopicGetResponse], error) {
 	return connect.NewResponse[miikov1.TopicGetResponse](&miikov1.TopicGetResponse{}), nil
 }
-
-func (s *MiikoController) HealthGet(
-	ctx context.Context,
-	req *connect.Request[emptypb.Empty],
-) (*connect.Response[miikov1.HealthGetResponse], error) {
-	return connect.NewResponse[miikov1.HealthGetResponse](&miikov1.HealthGetResponse{
-		Message: "ok",
-	}), nil
-}
