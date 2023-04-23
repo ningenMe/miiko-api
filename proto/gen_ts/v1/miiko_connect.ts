@@ -4,7 +4,7 @@
 // @ts-nocheck
 
 import { Empty, MethodKind } from "@bufbuild/protobuf";
-import { CategoryGetResponse, CategoryPostRequest, TopicGetRequest, TopicGetResponse } from "./miiko_pb.ts";
+import { CategoryGetResponse, CategoryPostRequest, HealthGetResponse, TopicGetRequest, TopicGetResponse } from "./miiko_pb.ts";
 
 /**
  * @generated from service miiko.v1.MiikoService
@@ -37,6 +37,15 @@ export const MiikoService = {
       name: "TopicGet",
       I: TopicGetRequest,
       O: TopicGetResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc miiko.v1.MiikoService.HealthGet
+     */
+    healthGet: {
+      name: "HealthGet",
+      I: Empty,
+      O: HealthGetResponse,
       kind: MethodKind.Unary,
     },
   }

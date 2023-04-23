@@ -380,3 +380,40 @@ export class Tag extends Message<Tag> {
   }
 }
 
+/**
+ * @generated from message miiko.v1.HealthGetResponse
+ */
+export class HealthGetResponse extends Message<HealthGetResponse> {
+  /**
+   * @generated from field: string message = 1;
+   */
+  message = "";
+
+  constructor(data?: PartialMessage<HealthGetResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "miiko.v1.HealthGetResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): HealthGetResponse {
+    return new HealthGetResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): HealthGetResponse {
+    return new HealthGetResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): HealthGetResponse {
+    return new HealthGetResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: HealthGetResponse | PlainMessage<HealthGetResponse> | undefined, b: HealthGetResponse | PlainMessage<HealthGetResponse> | undefined): boolean {
+    return proto3.util.equals(HealthGetResponse, a, b);
+  }
+}
+

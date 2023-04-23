@@ -10,6 +10,7 @@ service MiikoService {
   rpc CategoryGet (google.protobuf.Empty) returns (CategoryGetResponse) {}
   rpc CategoryPost (CategoryPostRequest) returns (google.protobuf.Empty) {}
   rpc TopicGet (TopicGetRequest) returns (TopicGetResponse) {}
+  rpc HealthGet (google.protobuf.Empty) returns (HealthGetResponse) {}
 }
 message Category {
   string category_id = 1;
@@ -47,4 +48,7 @@ message Problem {
 message Tag {
   string category_id = 1;
   string topic_display_name = 2;
+}
+message HealthGetResponse {
+  string message = 1;
 }
