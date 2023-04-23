@@ -1,6 +1,7 @@
 package main
 
 import (
+	grpchealth "github.com/bufbuild/connect-grpchealth-go"
 	"github.com/ningenMe/miiko-api/pkg/application"
 	"github.com/ningenMe/miiko-api/proto/gen_go/v1/miikov1connect"
 	"github.com/rs/cors"
@@ -25,8 +26,18 @@ func main() {
 	//server
 	miiko := &application.MiikoController{}
 	mux := http.NewServeMux()
-	path, handler := miikov1connect.NewMiikoServiceHandler(miiko)
-	mux.Handle(path, handler)
+
+	{
+		checker := grpchealth.NewStaticChecker(
+			miikov1connect.MiikoServiceName,
+		)
+		mux.Handle(grpchealth.NewHandler(checker))
+	}
+	{
+		path, handler := miikov1connect.NewMiikoServiceHandler(miiko)
+		mux.Handle(path, handler)
+	}
+
 	corsHandler := cors.New(cors.Options{
 		AllowedOrigins:   []string{"https://ningenme.net", "http://localhost:3000"},
 		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},

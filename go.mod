@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/bufbuild/connect-go v1.6.0
+	github.com/bufbuild/connect-grpchealth-go v1.0.0
 	github.com/rs/cors v1.9.0
 	golang.org/x/net v0.9.0
 	google.golang.org/protobuf v1.30.0
