@@ -1,7 +1,6 @@
 package main
 
 import (
-	grpchealth "github.com/bufbuild/connect-grpchealth-go"
 	"github.com/ningenMe/miiko-api/pkg/application"
 	"github.com/ningenMe/miiko-api/proto/gen_go/v1/miikov1connect"
 	"github.com/rs/cors"
@@ -24,17 +23,16 @@ func main() {
 	//defer infra.NingenmeMysql.Close()
 
 	//server
-	miiko := &application.MiikoController{}
 	mux := http.NewServeMux()
 
-	{
-		checker := grpchealth.NewStaticChecker(
-			miikov1connect.MiikoServiceName,
-		)
-		mux.Handle(grpchealth.NewHandler(checker))
-	}
+	miiko := &application.MiikoController{}
 	{
 		path, handler := miikov1connect.NewMiikoServiceHandler(miiko)
+		mux.Handle(path, handler)
+	}
+	health := &application.HealthController{}
+	{
+		path, handler := miikov1connect.NewHealthServiceHandler(health)
 		mux.Handle(path, handler)
 	}
 
