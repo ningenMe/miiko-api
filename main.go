@@ -44,7 +44,7 @@ func main() {
 		AllowedHeaders:   []string{"*"},
 		AllowCredentials: true,
 	}).Handler(h2c.NewHandler(mux, &http2.Server{}))
-	err := http.ListenAndServe("localhost:8081", corsHandler)
+	err := http.ListenAndServe(":8081", corsHandler)
 	if err != nil {
 		return
 	}
