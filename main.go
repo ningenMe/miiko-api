@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/ningenMe/miiko-api/pkg/application"
 	"github.com/ningenMe/miiko-api/proto/gen_go/v1/miikov1connect"
 	"github.com/rs/cors"
@@ -34,6 +35,12 @@ func main() {
 	{
 		path, handler := miikov1connect.NewHealthServiceHandler(health)
 		mux.Handle(path, handler)
+	}
+	{
+		healthcheck := func(w http.ResponseWriter, _ *http.Request) {
+			fmt.Fprint(w, "OK")
+		}
+		mux.Handle("/healthcheck", http.HandlerFunc(healthcheck))
 	}
 
 	corsHandler := cors.New(cors.Options{
