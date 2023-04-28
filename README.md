@@ -17,6 +17,32 @@ npx buf generate miiko
 - curl
 
 ```shell
-curl -XPOST -H 'Content-Type: application/json' -d '{}' localhost:8081/miiko.v1.MiikoService/CategoryGet -i
 curl -XPOST -H 'Content-Type: application/json' -d '{}' localhost:8081/miiko.v1.HealthService/Check -i
+```
+
+```shell
+curl -XPOST -H 'Content-Type: application/json' -d '
+    {
+      "category" : {
+        "categoryDisplayName": "テスト",
+        "categorySystemName": "test",
+        "categoryOrder": 1
+      }
+    }
+' localhost:8081/miiko.v1.MiikoService/CategoryGet -i
+curl -XPOST -H 'Content-Type: application/json' -d '
+    {
+      "categoryId" : "category_6H8BTC",
+      "category" : {
+        "categoryDisplayName": "テスト改",
+        "categorySystemName": "test2",
+        "categoryOrder": -1
+      }
+    }
+' localhost:8081/miiko.v1.MiikoService/CategoryGet -i
+curl -XPOST -H 'Content-Type: application/json' -d '
+    {
+      "categoryId" : "category_6H8BTC"
+    }
+' localhost:8081/miiko.v1.MiikoService/CategoryGet -i
 ```

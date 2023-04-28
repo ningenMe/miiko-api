@@ -7,13 +7,6 @@ import (
 
 type CategoryRepository struct{}
 
-type CategoryDto struct {
-	CategoryId          string `db:"category_id"`
-	CategoryDisplayName string `db:"category_display_name"`
-	CategorySystemName  string `db:"category_system_name"`
-	CategoryOrder       int32  `db:"category_order"`
-}
-
 func (CategoryRepository) GetList() []*CategoryDto {
 	rows, err := ComproMysql.Queryx(`SELECT category_id, category_display_name, category_system_name, category_order FROM category ORDER BY category_order ASC`)
 	if err != nil {

@@ -51,22 +51,22 @@ func (s *MiikoController) CategoryPost(
 	req *connect.Request[miikov1.CategoryPostRequest],
 ) (*connect.Response[emptypb.Empty], error) {
 
-	//categoryId := req.Msg.
-	//if req.GetCategory() != nil {
-	//	categoryId = req.GetCategoryId()
-	//	if categoryId == "" {
-	//		categoryId = domainmodel.GetNewCategoryId()
-	//	}
-	//	categoryRepository.Upsert(
-	//		&domainmodel.Category{
-	//			CategoryId:          categoryId,
-	//			CategoryDisplayName: req.GetCategory().GetCategoryDisplayName(),
-	//			CategorySystemName:  req.GetCategory().GetCategorySystemName(),
-	//			CategoryOrder:       req.GetCategory().GetCategoryOrder(),
-	//		})
-	//} else {
-	//	categoryRepository.Delete(categoryId)
-	//}
+	categoryId := req.Msg.CategoryId
+	if req.Msg.GetCategory() != nil {
+		categoryId = req.Msg.GetCategoryId()
+		if categoryId == "" {
+			categoryId = infra.GetNewCategoryId()
+		}
+		categoryRepository.Upsert(
+			&infra.CategoryDto{
+				CategoryId:          categoryId,
+				CategoryDisplayName: req.Msg.GetCategory().GetCategoryDisplayName(),
+				CategorySystemName:  req.Msg.GetCategory().GetCategorySystemName(),
+				CategoryOrder:       req.Msg.GetCategory().GetCategoryOrder(),
+			})
+	} else {
+		categoryRepository.Delete(categoryId)
+	}
 
 	return connect.NewResponse[emptypb.Empty](
 		&emptypb.Empty{},
