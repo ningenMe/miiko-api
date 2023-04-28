@@ -39,7 +39,7 @@ func (s *MiikoController) CategoryGet(
 func (s *MiikoController) CategoryPost(
 	ctx context.Context,
 	req *connect.Request[miikov1.CategoryPostRequest],
-) (*connect.Response[emptypb.Empty], error) {
+) (*connect.Response[miikov1.CategoryPostResponse], error) {
 
 	categoryId := req.Msg.CategoryId
 	if req.Msg.GetCategory() != nil {
@@ -58,8 +58,10 @@ func (s *MiikoController) CategoryPost(
 		categoryRepository.Delete(categoryId)
 	}
 
-	return connect.NewResponse[emptypb.Empty](
-		&emptypb.Empty{},
+	return connect.NewResponse[miikov1.CategoryPostResponse](
+		&miikov1.CategoryPostResponse{
+			CategoryId: categoryId,
+		},
 	), nil
 }
 

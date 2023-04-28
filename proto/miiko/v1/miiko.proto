@@ -8,7 +8,7 @@ option go_package = "github.com/ningenMe/miiko-api/proto/gen_go/v1;miikov1";
 
 service MiikoService {
   rpc CategoryGet (google.protobuf.Empty) returns (CategoryGetResponse) {}
-  rpc CategoryPost (CategoryPostRequest) returns (google.protobuf.Empty) {}
+  rpc CategoryPost (CategoryPostRequest) returns (CategoryPostResponse) {}
   rpc TopicGet (TopicGetRequest) returns (TopicGetResponse) {}
 }
 message Category {
@@ -23,6 +23,9 @@ message CategoryGetResponse {
 message CategoryPostRequest {
   string category_id = 1;
   Category category = 2;
+}
+message CategoryPostResponse {
+  string category_id = 1;
 }
 message Topic {
   string topic_id = 1;

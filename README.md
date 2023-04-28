@@ -29,20 +29,20 @@ curl -XPOST -H 'Content-Type: application/json' -d '
         "categoryOrder": 1
       }
     }
-' localhost:8081/miiko.v1.MiikoService/CategoryGet -i
+' localhost:8081/miiko.v1.MiikoService/CategoryPost -i
 curl -XPOST -H 'Content-Type: application/json' -d '
     {
-      "categoryId" : "category_6H8BTC",
+      "categoryId" : "category_BKL1Q5",
       "category" : {
         "categoryDisplayName": "テスト改",
         "categorySystemName": "test2",
         "categoryOrder": -1
       }
     }
-' localhost:8081/miiko.v1.MiikoService/CategoryGet -i
+' localhost:8081/miiko.v1.MiikoService/CategoryPost -i
 curl -XPOST -H 'Content-Type: application/json' -d '
     {
-      "categoryId" : "category_6H8BTC"
+      "categoryId" : "category_BKL1Q5"
     }
-' localhost:8081/miiko.v1.MiikoService/CategoryGet -i
+' localhost:8081/miiko.v1.MiikoService/CategoryPost -i
 ```

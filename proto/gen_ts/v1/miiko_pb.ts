@@ -142,6 +142,43 @@ export class CategoryPostRequest extends Message<CategoryPostRequest> {
 }
 
 /**
+ * @generated from message miiko.v1.CategoryPostResponse
+ */
+export class CategoryPostResponse extends Message<CategoryPostResponse> {
+  /**
+   * @generated from field: string category_id = 1;
+   */
+  categoryId = "";
+
+  constructor(data?: PartialMessage<CategoryPostResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "miiko.v1.CategoryPostResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "category_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CategoryPostResponse {
+    return new CategoryPostResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CategoryPostResponse {
+    return new CategoryPostResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CategoryPostResponse {
+    return new CategoryPostResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: CategoryPostResponse | PlainMessage<CategoryPostResponse> | undefined, b: CategoryPostResponse | PlainMessage<CategoryPostResponse> | undefined): boolean {
+    return proto3.util.equals(CategoryPostResponse, a, b);
+  }
+}
+
+/**
  * @generated from message miiko.v1.Topic
  */
 export class Topic extends Message<Topic> {

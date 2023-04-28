@@ -47,7 +47,7 @@ const (
 // MiikoServiceClient is a client for the miiko.v1.MiikoService service.
 type MiikoServiceClient interface {
 	CategoryGet(context.Context, *connect_go.Request[emptypb.Empty]) (*connect_go.Response[v1.CategoryGetResponse], error)
-	CategoryPost(context.Context, *connect_go.Request[v1.CategoryPostRequest]) (*connect_go.Response[emptypb.Empty], error)
+	CategoryPost(context.Context, *connect_go.Request[v1.CategoryPostRequest]) (*connect_go.Response[v1.CategoryPostResponse], error)
 	TopicGet(context.Context, *connect_go.Request[v1.TopicGetRequest]) (*connect_go.Response[v1.TopicGetResponse], error)
 }
 
@@ -66,7 +66,7 @@ func NewMiikoServiceClient(httpClient connect_go.HTTPClient, baseURL string, opt
 			baseURL+MiikoServiceCategoryGetProcedure,
 			opts...,
 		),
-		categoryPost: connect_go.NewClient[v1.CategoryPostRequest, emptypb.Empty](
+		categoryPost: connect_go.NewClient[v1.CategoryPostRequest, v1.CategoryPostResponse](
 			httpClient,
 			baseURL+MiikoServiceCategoryPostProcedure,
 			opts...,
@@ -82,7 +82,7 @@ func NewMiikoServiceClient(httpClient connect_go.HTTPClient, baseURL string, opt
 // miikoServiceClient implements MiikoServiceClient.
 type miikoServiceClient struct {
 	categoryGet  *connect_go.Client[emptypb.Empty, v1.CategoryGetResponse]
-	categoryPost *connect_go.Client[v1.CategoryPostRequest, emptypb.Empty]
+	categoryPost *connect_go.Client[v1.CategoryPostRequest, v1.CategoryPostResponse]
 	topicGet     *connect_go.Client[v1.TopicGetRequest, v1.TopicGetResponse]
 }
 
@@ -92,7 +92,7 @@ func (c *miikoServiceClient) CategoryGet(ctx context.Context, req *connect_go.Re
 }
 
 // CategoryPost calls miiko.v1.MiikoService.CategoryPost.
-func (c *miikoServiceClient) CategoryPost(ctx context.Context, req *connect_go.Request[v1.CategoryPostRequest]) (*connect_go.Response[emptypb.Empty], error) {
+func (c *miikoServiceClient) CategoryPost(ctx context.Context, req *connect_go.Request[v1.CategoryPostRequest]) (*connect_go.Response[v1.CategoryPostResponse], error) {
 	return c.categoryPost.CallUnary(ctx, req)
 }
 
@@ -104,7 +104,7 @@ func (c *miikoServiceClient) TopicGet(ctx context.Context, req *connect_go.Reque
 // MiikoServiceHandler is an implementation of the miiko.v1.MiikoService service.
 type MiikoServiceHandler interface {
 	CategoryGet(context.Context, *connect_go.Request[emptypb.Empty]) (*connect_go.Response[v1.CategoryGetResponse], error)
-	CategoryPost(context.Context, *connect_go.Request[v1.CategoryPostRequest]) (*connect_go.Response[emptypb.Empty], error)
+	CategoryPost(context.Context, *connect_go.Request[v1.CategoryPostRequest]) (*connect_go.Response[v1.CategoryPostResponse], error)
 	TopicGet(context.Context, *connect_go.Request[v1.TopicGetRequest]) (*connect_go.Response[v1.TopicGetResponse], error)
 }
 
@@ -140,7 +140,7 @@ func (UnimplementedMiikoServiceHandler) CategoryGet(context.Context, *connect_go
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("miiko.v1.MiikoService.CategoryGet is not implemented"))
 }
 
-func (UnimplementedMiikoServiceHandler) CategoryPost(context.Context, *connect_go.Request[v1.CategoryPostRequest]) (*connect_go.Response[emptypb.Empty], error) {
+func (UnimplementedMiikoServiceHandler) CategoryPost(context.Context, *connect_go.Request[v1.CategoryPostRequest]) (*connect_go.Response[v1.CategoryPostResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("miiko.v1.MiikoService.CategoryPost is not implemented"))
 }
 

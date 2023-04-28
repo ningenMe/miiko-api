@@ -4,7 +4,7 @@
 // @ts-nocheck
 
 import { Empty, MethodKind } from "@bufbuild/protobuf";
-import { CategoryGetResponse, CategoryPostRequest, TopicGetRequest, TopicGetResponse } from "./miiko_pb.ts";
+import { CategoryGetResponse, CategoryPostRequest, CategoryPostResponse, TopicGetRequest, TopicGetResponse } from "./miiko_pb.ts";
 
 /**
  * @generated from service miiko.v1.MiikoService
@@ -27,7 +27,7 @@ export const MiikoService = {
     categoryPost: {
       name: "CategoryPost",
       I: CategoryPostRequest,
-      O: Empty,
+      O: CategoryPostResponse,
       kind: MethodKind.Unary,
     },
     /**
