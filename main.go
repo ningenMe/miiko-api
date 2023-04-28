@@ -2,37 +2,39 @@ package main
 
 import (
 	"fmt"
+	"github.com/jmoiron/sqlx"
 	"github.com/ningenMe/miiko-api/pkg/application"
+	"github.com/ningenMe/miiko-api/pkg/infra"
 	"github.com/ningenMe/miiko-api/proto/gen_go/v1/miikov1connect"
 	"github.com/rs/cors"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
+	"log"
 	"net/http"
 )
 
 func main() {
-	//infra.NingenmeMysql, err = sqlx.Open("mysql", infra.GetMysqlConfig("ningenme").FormatDSN())
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//defer infra.NingenmeMysql.Close()
-	//
-	//infra.ComproMysql, err = sqlx.Open("mysql", infra.GetMysqlConfig("compro").FormatDSN())
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//defer infra.NingenmeMysql.Close()
+	var err error
+
+	//db
+	{
+		infra.ComproMysql, err = sqlx.Open("mysql", infra.GetMysqlConfig("compro").FormatDSN())
+		if err != nil {
+			log.Fatalln(err)
+		}
+		defer infra.ComproMysql.Close()
+	}
 
 	//server
 	mux := http.NewServeMux()
 
-	miiko := &application.MiikoController{}
 	{
+		miiko := &application.MiikoController{}
 		path, handler := miikov1connect.NewMiikoServiceHandler(miiko)
 		mux.Handle(path, handler)
 	}
-	health := &application.HealthController{}
 	{
+		health := &application.HealthController{}
 		path, handler := miikov1connect.NewHealthServiceHandler(health)
 		mux.Handle(path, handler)
 	}
@@ -49,7 +51,7 @@ func main() {
 		AllowedHeaders:   []string{"*"},
 		AllowCredentials: true,
 	}).Handler(h2c.NewHandler(mux, &http2.Server{}))
-	err := http.ListenAndServe(":8081", corsHandler)
+	err = http.ListenAndServe(":8081", corsHandler)
 	if err != nil {
 		return
 	}

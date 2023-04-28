@@ -8,6 +8,12 @@ buf lint
 npx buf generate miiko
 ```
 
+- how to set env-variable
+
+```shell
+`aws ssm get-parameters-by-path --path "/" --region ap-northeast-1 --output text | awk '{print "export",$5"="$7}'`
+```
+
 - curl
 
 ```shell

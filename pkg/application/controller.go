@@ -3,12 +3,15 @@ package application
 import (
 	"context"
 	"github.com/bufbuild/connect-go"
+	"github.com/ningenMe/miiko-api/pkg/infra"
 	miikov1 "github.com/ningenMe/miiko-api/proto/gen_go/v1"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type MiikoController struct{}
 type HealthController struct{}
+
+var categoryRepository = infra.CategoryRepository{}
 
 func (s *HealthController) Check(
 	ctx context.Context,
@@ -23,15 +26,22 @@ func (s *MiikoController) CategoryGet(
 	ctx context.Context,
 	req *connect.Request[emptypb.Empty],
 ) (*connect.Response[miikov1.CategoryGetResponse], error) {
-	var list []*miikov1.Category
-	list = append(list, &miikov1.Category{
-		CategoryId:          "a",
-		CategorySystemName:  "b",
-		CategoryDisplayName: "c",
-		CategoryOrder:       1,
-	})
+
+	list := categoryRepository.GetList()
+
+	var viewList []*miikov1.Category
+	for _, category := range list {
+
+		viewList = append(viewList, &miikov1.Category{
+			CategoryId:          category.CategoryId,
+			CategoryDisplayName: category.CategoryDisplayName,
+			CategorySystemName:  category.CategorySystemName,
+			CategoryOrder:       category.CategoryOrder,
+		})
+	}
+
 	res := &miikov1.CategoryGetResponse{
-		CategoryList: list,
+		CategoryList: viewList,
 	}
 	return connect.NewResponse[miikov1.CategoryGetResponse](res), nil
 }
@@ -40,6 +50,24 @@ func (s *MiikoController) CategoryPost(
 	ctx context.Context,
 	req *connect.Request[miikov1.CategoryPostRequest],
 ) (*connect.Response[emptypb.Empty], error) {
+
+	//categoryId := req.Msg.
+	//if req.GetCategory() != nil {
+	//	categoryId = req.GetCategoryId()
+	//	if categoryId == "" {
+	//		categoryId = domainmodel.GetNewCategoryId()
+	//	}
+	//	categoryRepository.Upsert(
+	//		&domainmodel.Category{
+	//			CategoryId:          categoryId,
+	//			CategoryDisplayName: req.GetCategory().GetCategoryDisplayName(),
+	//			CategorySystemName:  req.GetCategory().GetCategorySystemName(),
+	//			CategoryOrder:       req.GetCategory().GetCategoryOrder(),
+	//		})
+	//} else {
+	//	categoryRepository.Delete(categoryId)
+	//}
+
 	return connect.NewResponse[emptypb.Empty](
 		&emptypb.Empty{},
 	), nil
