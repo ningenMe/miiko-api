@@ -18,6 +18,26 @@ func GetNewCategoryId() string {
 	return "category_" + getRandomString(6)
 }
 
+type TopicDto struct {
+	TopicId          string `db:"topic_id"`
+	CategoryId       string `db:"category_id"`
+	TopicDisplayName string `db:"topic_display_name"`
+	TopicOrder       int32  `db:"topic_order"`
+	ProblemList      []*ProblemDto
+}
+
+func GetNewTopicId() string {
+	return "topic_" + getRandomString(6)
+}
+
+type ProblemDto struct {
+	ProblemId          string `db:"problem_id"`
+	Url                string `db:"url"`
+	ProblemDisplayName string `db:"problem_display_name"`
+	Estimation         int32  `db:"estimation"`
+	TagList            string `db:"tag_list"`
+}
+
 // https://qiita.com/nakaryooo/items/7d269525a288c4b3ecda
 func getRandomString(digit uint32) string {
 

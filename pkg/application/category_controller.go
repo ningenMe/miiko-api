@@ -11,6 +11,7 @@ import (
 type MiikoController struct{}
 
 var categoryRepository = infra.CategoryRepository{}
+var topicRepository = infra.TopicRepository{}
 
 func (s *MiikoController) CategoryGet(
 	ctx context.Context,
@@ -65,9 +66,37 @@ func (s *MiikoController) CategoryPost(
 	), nil
 }
 
+// TODO
 func (s *MiikoController) TopicGet(
 	ctx context.Context,
 	req *connect.Request[miikov1.TopicGetRequest],
 ) (*connect.Response[miikov1.TopicGetResponse], error) {
-	return connect.NewResponse[miikov1.TopicGetResponse](&miikov1.TopicGetResponse{}), nil
+
+	categoryId := req.Msg.CategoryId
+	list := topicRepository.GetListByCategoryId(categoryId)
+
+	var viewTopicList []*miikov1.Topic
+	for _, topic := range list {
+
+		var viewProblemList []*miikov1.Problem
+		for _, problem := range topic.ProblemList {
+			viewProblemList = append(viewProblemList, &miikov1.Problem{
+				ProblemId:          problem.ProblemId,
+				Url:                problem.Url,
+				ProblemDisplayName: problem.ProblemDisplayName,
+				Estimation:         problem.Estimation,
+			})
+		}
+
+		viewTopicList = append(viewTopicList, &miikov1.Topic{
+			TopicId:          topic.TopicId,
+			TopicDisplayName: topic.TopicDisplayName,
+			TopicOrder:       topic.TopicOrder,
+			ProblemList:      viewProblemList,
+		})
+	}
+
+	return connect.NewResponse[miikov1.TopicGetResponse](&miikov1.TopicGetResponse{
+		TopicList: viewTopicList,
+	}), nil
 }

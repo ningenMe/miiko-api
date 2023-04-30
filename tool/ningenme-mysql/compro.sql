@@ -40,7 +40,7 @@ CREATE TABLE `problem`
     `url`                  varchar(511)                            NOT NULL,
     `problem_display_name` varchar(511) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
     `estimation`           int(10) unsigned                        NOT NULL DEFAULT '0',
-    `tagList`              json                                    NOT NULL DEFAULT JSON_ARRAY(),
+    `tag_list`             json                                    NOT NULL,
     `created_time`         timestamp                               NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_time`         timestamp                               NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`problem_id`),
@@ -50,8 +50,9 @@ CREATE TABLE `problem`
 
 CREATE TABLE `relation_topic_problem`
 (
-    `topic_id`   varchar(255) NOT NULL,
-    `problem_id` varchar(255) NOT NULL,
+    `topic_id`     varchar(255) NOT NULL,
+    `problem_id`   varchar(255) NOT NULL,
+    `created_time` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`topic_id`, `problem_id`),
     KEY `problem_id` (`problem_id`),
     FOREIGN KEY `topic_id_foreign` (`topic_id`) REFERENCES `topic` (`topic_id`),

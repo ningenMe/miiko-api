@@ -21,6 +21,8 @@ curl -XPOST -H 'Content-Type: application/json' -d '{}' localhost:8081/miiko.v1.
 ```
 
 ```shell
+curl -XPOST -H 'Content-Type: application/json' -d '{}
+' localhost:8081/miiko.v1.MiikoService/CategoryGet -i
 curl -XPOST -H 'Content-Type: application/json' -d '
     {
       "category" : {
@@ -46,3 +48,12 @@ curl -XPOST -H 'Content-Type: application/json' -d '
     }
 ' localhost:8081/miiko.v1.MiikoService/CategoryPost -i
 ```
+
+```shell
+curl -XPOST -H 'Content-Type: application/json' -d '
+    {
+      "categoryId" : "category_1J6WNP"
+    }
+' localhost:8081/miiko.v1.MiikoService/TopicGet -i
+```
+
