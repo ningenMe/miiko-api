@@ -7,9 +7,9 @@ package miiko.v1;
 option go_package = "github.com/ningenMe/miiko-api/proto/gen_go/v1;miikov1";
 
 service MiikoService {
-  rpc CategoryGet (google.protobuf.Empty) returns (CategoryGetResponse) {}
+  rpc CategoryListGet (google.protobuf.Empty) returns (CategoryListGetResponse) {}
   rpc CategoryPost (CategoryPostRequest) returns (CategoryPostResponse) {}
-  rpc TopicGet (TopicGetRequest) returns (TopicGetResponse) {}
+  rpc TopicListGet (TopicListGetRequest) returns (TopicListGetResponse) {}
 }
 message Category {
   string category_id = 1;
@@ -17,7 +17,7 @@ message Category {
   string category_system_name = 3;
   int32 category_order = 4;
 }
-message CategoryGetResponse {
+message CategoryListGetResponse {
   repeated Category category_list = 1;
 }
 message CategoryPostRequest {
@@ -33,10 +33,10 @@ message Topic {
   int32 topic_order = 3;
   repeated Problem problem_list = 4;
 }
-message TopicGetRequest {
+message TopicListGetRequest {
   string category_system_name = 1;
 }
-message TopicGetResponse {
+message TopicListGetResponse {
   Category category = 1;
   repeated Topic topic_list = 2;
 }

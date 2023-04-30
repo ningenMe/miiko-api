@@ -13,10 +13,10 @@ type MiikoController struct{}
 var categoryRepository = infra.CategoryRepository{}
 var topicRepository = infra.TopicRepository{}
 
-func (s *MiikoController) CategoryGet(
+func (s *MiikoController) CategoryListGet(
 	ctx context.Context,
 	req *connect.Request[emptypb.Empty],
-) (*connect.Response[miikov1.CategoryGetResponse], error) {
+) (*connect.Response[miikov1.CategoryListGetResponse], error) {
 
 	list := categoryRepository.GetList()
 
@@ -31,10 +31,10 @@ func (s *MiikoController) CategoryGet(
 		})
 	}
 
-	res := &miikov1.CategoryGetResponse{
+	res := &miikov1.CategoryListGetResponse{
 		CategoryList: viewList,
 	}
-	return connect.NewResponse[miikov1.CategoryGetResponse](res), nil
+	return connect.NewResponse[miikov1.CategoryListGetResponse](res), nil
 }
 
 func (s *MiikoController) CategoryPost(
@@ -66,10 +66,10 @@ func (s *MiikoController) CategoryPost(
 	), nil
 }
 
-func (s *MiikoController) TopicGet(
+func (s *MiikoController) TopicListGet(
 	ctx context.Context,
-	req *connect.Request[miikov1.TopicGetRequest],
-) (*connect.Response[miikov1.TopicGetResponse], error) {
+	req *connect.Request[miikov1.TopicListGetRequest],
+) (*connect.Response[miikov1.TopicListGetResponse], error) {
 
 	categorySystemName := req.Msg.CategorySystemName
 	categoryDto := categoryRepository.Get(categorySystemName)
@@ -107,7 +107,7 @@ func (s *MiikoController) TopicGet(
 		})
 	}
 
-	return connect.NewResponse[miikov1.TopicGetResponse](&miikov1.TopicGetResponse{
+	return connect.NewResponse[miikov1.TopicListGetResponse](&miikov1.TopicListGetResponse{
 		Category:  category,
 		TopicList: viewTopicList,
 	}), nil

@@ -4,7 +4,7 @@
 // @ts-nocheck
 
 import { Empty, MethodKind } from "@bufbuild/protobuf";
-import { CategoryGetResponse, CategoryPostRequest, CategoryPostResponse, TopicGetRequest, TopicGetResponse } from "./miiko_pb.ts";
+import { CategoryListGetResponse, CategoryPostRequest, CategoryPostResponse, TopicListGetRequest, TopicListGetResponse } from "./miiko_pb.ts";
 
 /**
  * @generated from service miiko.v1.MiikoService
@@ -13,12 +13,12 @@ export const MiikoService = {
   typeName: "miiko.v1.MiikoService",
   methods: {
     /**
-     * @generated from rpc miiko.v1.MiikoService.CategoryGet
+     * @generated from rpc miiko.v1.MiikoService.CategoryListGet
      */
-    categoryGet: {
-      name: "CategoryGet",
+    categoryListGet: {
+      name: "CategoryListGet",
       I: Empty,
-      O: CategoryGetResponse,
+      O: CategoryListGetResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -31,12 +31,12 @@ export const MiikoService = {
       kind: MethodKind.Unary,
     },
     /**
-     * @generated from rpc miiko.v1.MiikoService.TopicGet
+     * @generated from rpc miiko.v1.MiikoService.TopicListGet
      */
-    topicGet: {
-      name: "TopicGet",
-      I: TopicGetRequest,
-      O: TopicGetResponse,
+    topicListGet: {
+      name: "TopicListGet",
+      I: TopicListGetRequest,
+      O: TopicListGetResponse,
       kind: MethodKind.Unary,
     },
   }

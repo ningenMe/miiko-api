@@ -22,7 +22,7 @@ curl -XPOST -H 'Content-Type: application/json' -d '{}' localhost:8081/miiko.v1.
 
 ```shell
 curl -XPOST -H 'Content-Type: application/json' -d '{}
-' localhost:8081/miiko.v1.MiikoService/CategoryGet -i
+' localhost:8081/miiko.v1.MiikoService/CategoryListGet -i
 curl -XPOST -H 'Content-Type: application/json' -d '
     {
       "category" : {
@@ -54,6 +54,6 @@ curl -XPOST -H 'Content-Type: application/json' -d '
     {
       "categorySystemName" : "accumulate"
     }
-' localhost:8081/miiko.v1.MiikoService/TopicGet -i
+' localhost:8081/miiko.v1.MiikoService/TopicListGet -i
 ```
 
