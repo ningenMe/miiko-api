@@ -7,13 +7,13 @@ import (
 
 type TopicRepository struct{}
 
-func (TopicRepository) GetListByCategoryId(categoryId string) []*TopicDto {
+func (TopicRepository) GetListByCategorySystemName(categorySystemName string) []*TopicDto {
 	var list []*TopicDto
 
 	rows, err := ComproMysql.NamedQuery(
-		`SELECT topic_id, category_id, topic_display_name, topic_order FROM topic WHERE category_id = :categoryId ORDER BY topic_order ASC`,
+		`SELECT topic_id, t.category_id, topic_display_name, topic_order FROM topic AS t LEFT JOIN category AS c ON t.category_id = c.category_id WHERE category_system_name = :categorySystemName ORDER BY topic_order ASC`,
 		map[string]interface{}{
-			"categoryId": categoryId,
+			"categorySystemName": categorySystemName,
 		})
 	if err != nil {
 		fmt.Println(err)

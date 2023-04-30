@@ -34,7 +34,7 @@ message Topic {
   repeated Problem problem_list = 4;
 }
 message TopicGetRequest {
-  string category_id = 1;
+  string category_system_name = 1;
 }
 message TopicGetResponse {
   Category category = 1;

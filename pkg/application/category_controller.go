@@ -66,14 +66,13 @@ func (s *MiikoController) CategoryPost(
 	), nil
 }
 
-// TODO
 func (s *MiikoController) TopicGet(
 	ctx context.Context,
 	req *connect.Request[miikov1.TopicGetRequest],
 ) (*connect.Response[miikov1.TopicGetResponse], error) {
 
-	categoryId := req.Msg.CategoryId
-	list := topicRepository.GetListByCategoryId(categoryId)
+	categorySystemName := req.Msg.CategorySystemName
+	list := topicRepository.GetListByCategorySystemName(categorySystemName)
 
 	var viewTopicList []*miikov1.Topic
 	for _, topic := range list {

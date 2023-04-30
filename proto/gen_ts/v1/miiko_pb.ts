@@ -238,9 +238,9 @@ export class Topic extends Message<Topic> {
  */
 export class TopicGetRequest extends Message<TopicGetRequest> {
   /**
-   * @generated from field: string category_id = 1;
+   * @generated from field: string category_system_name = 1;
    */
-  categoryId = "";
+  categorySystemName = "";
 
   constructor(data?: PartialMessage<TopicGetRequest>) {
     super();
@@ -250,7 +250,7 @@ export class TopicGetRequest extends Message<TopicGetRequest> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "miiko.v1.TopicGetRequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "category_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "category_system_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TopicGetRequest {

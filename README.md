@@ -52,7 +52,7 @@ curl -XPOST -H 'Content-Type: application/json' -d '
 ```shell
 curl -XPOST -H 'Content-Type: application/json' -d '
     {
-      "categoryId" : "category_1J6WNP"
+      "categorySystemName" : "accumulate"
     }
 ' localhost:8081/miiko.v1.MiikoService/TopicGet -i
 ```
