@@ -72,7 +72,19 @@ func (s *MiikoController) TopicGet(
 ) (*connect.Response[miikov1.TopicGetResponse], error) {
 
 	categorySystemName := req.Msg.CategorySystemName
-	list := topicRepository.GetListByCategorySystemName(categorySystemName)
+	categoryDto := categoryRepository.Get(categorySystemName)
+
+	var list []*infra.TopicDto
+	var category *miikov1.Category
+	if categoryDto != nil {
+		category = &miikov1.Category{
+			CategoryId:          categoryDto.CategoryId,
+			CategorySystemName:  categoryDto.CategorySystemName,
+			CategoryDisplayName: categoryDto.CategoryDisplayName,
+			CategoryOrder:       categoryDto.CategoryOrder,
+		}
+		list = topicRepository.GetListByCategoryId(categoryDto.CategoryId)
+	}
 
 	var viewTopicList []*miikov1.Topic
 	for _, topic := range list {
@@ -96,6 +108,7 @@ func (s *MiikoController) TopicGet(
 	}
 
 	return connect.NewResponse[miikov1.TopicGetResponse](&miikov1.TopicGetResponse{
+		Category:  category,
 		TopicList: viewTopicList,
 	}), nil
 }

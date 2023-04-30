@@ -26,6 +26,31 @@ func (CategoryRepository) GetList() []*CategoryDto {
 	return list
 }
 
+func (CategoryRepository) Get(categorySystemName string) *CategoryDto {
+	rows, err := ComproMysql.NamedQuery(`SELECT category_id, category_display_name, category_system_name, category_order FROM category WHERE category_system_name = :categorySystemName`,
+		map[string]interface{}{
+			"categorySystemName": categorySystemName,
+		})
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer rows.Close()
+
+	var list []*CategoryDto
+	for rows.Next() {
+		c := &CategoryDto{}
+		if err = rows.StructScan(c); err != nil {
+			fmt.Println(err)
+		}
+		list = append(list, c)
+	}
+
+	if len(list) > 0 {
+		return list[0]
+	}
+	return nil
+}
+
 func (CategoryRepository) Upsert(category *CategoryDto) {
 
 	_, err := ComproMysql.NamedExec(`REPLACE INTO category (category_id, category_display_name, category_system_name, category_order) 
