@@ -153,7 +153,13 @@ func (s *MiikoController) TopicPost(
 	if topicId == "" {
 		topicId = infra.GetNewTopicId()
 	}
-	//TODO upsert
+	topicRepository.Upsert(
+		&infra.TopicDto{
+			TopicId:          topicId,
+			CategoryId:       req.Msg.CategoryId,
+			TopicDisplayName: req.Msg.GetTopic().GetTopicDisplayName(),
+			TopicOrder:       req.Msg.GetTopic().GetTopicOrder(),
+		})
 
 	return connect.NewResponse[miikov1.TopicPostResponse](
 		&miikov1.TopicPostResponse{
