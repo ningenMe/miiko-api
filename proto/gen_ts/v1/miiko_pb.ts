@@ -62,6 +62,167 @@ export class Category extends Message<Category> {
 }
 
 /**
+ * @generated from message miiko.v1.Topic
+ */
+export class Topic extends Message<Topic> {
+  /**
+   * @generated from field: string topic_id = 1;
+   */
+  topicId = "";
+
+  /**
+   * @generated from field: string topic_display_name = 2;
+   */
+  topicDisplayName = "";
+
+  /**
+   * @generated from field: int32 topic_order = 3;
+   */
+  topicOrder = 0;
+
+  /**
+   * @generated from field: repeated miiko.v1.Problem problem_list = 4;
+   */
+  problemList: Problem[] = [];
+
+  constructor(data?: PartialMessage<Topic>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "miiko.v1.Topic";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "topic_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "topic_display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "topic_order", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 4, name: "problem_list", kind: "message", T: Problem, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Topic {
+    return new Topic().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Topic {
+    return new Topic().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Topic {
+    return new Topic().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: Topic | PlainMessage<Topic> | undefined, b: Topic | PlainMessage<Topic> | undefined): boolean {
+    return proto3.util.equals(Topic, a, b);
+  }
+}
+
+/**
+ * @generated from message miiko.v1.Problem
+ */
+export class Problem extends Message<Problem> {
+  /**
+   * @generated from field: string problem_id = 1;
+   */
+  problemId = "";
+
+  /**
+   * @generated from field: string url = 2;
+   */
+  url = "";
+
+  /**
+   * @generated from field: string problem_display_name = 3;
+   */
+  problemDisplayName = "";
+
+  /**
+   * @generated from field: int32 estimation = 4;
+   */
+  estimation = 0;
+
+  /**
+   * @generated from field: repeated miiko.v1.Tag tag_list = 5;
+   */
+  tagList: Tag[] = [];
+
+  constructor(data?: PartialMessage<Problem>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "miiko.v1.Problem";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "problem_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "problem_display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "estimation", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 5, name: "tag_list", kind: "message", T: Tag, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Problem {
+    return new Problem().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Problem {
+    return new Problem().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Problem {
+    return new Problem().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: Problem | PlainMessage<Problem> | undefined, b: Problem | PlainMessage<Problem> | undefined): boolean {
+    return proto3.util.equals(Problem, a, b);
+  }
+}
+
+/**
+ * @generated from message miiko.v1.Tag
+ */
+export class Tag extends Message<Tag> {
+  /**
+   * @generated from field: string category_id = 1;
+   */
+  categoryId = "";
+
+  /**
+   * @generated from field: string topic_display_name = 2;
+   */
+  topicDisplayName = "";
+
+  constructor(data?: PartialMessage<Tag>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "miiko.v1.Tag";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "category_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "topic_display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Tag {
+    return new Tag().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Tag {
+    return new Tag().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Tag {
+    return new Tag().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: Tag | PlainMessage<Tag> | undefined, b: Tag | PlainMessage<Tag> | undefined): boolean {
+    return proto3.util.equals(Tag, a, b);
+  }
+}
+
+/**
+ * req/res
+ *
  * @generated from message miiko.v1.CategoryListGetResponse
  */
 export class CategoryListGetResponse extends Message<CategoryListGetResponse> {
@@ -179,61 +340,6 @@ export class CategoryPostResponse extends Message<CategoryPostResponse> {
 }
 
 /**
- * @generated from message miiko.v1.Topic
- */
-export class Topic extends Message<Topic> {
-  /**
-   * @generated from field: string topic_id = 1;
-   */
-  topicId = "";
-
-  /**
-   * @generated from field: string topic_display_name = 2;
-   */
-  topicDisplayName = "";
-
-  /**
-   * @generated from field: int32 topic_order = 3;
-   */
-  topicOrder = 0;
-
-  /**
-   * @generated from field: repeated miiko.v1.Problem problem_list = 4;
-   */
-  problemList: Problem[] = [];
-
-  constructor(data?: PartialMessage<Topic>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
-
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "miiko.v1.Topic";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "topic_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "topic_display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "topic_order", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
-    { no: 4, name: "problem_list", kind: "message", T: Problem, repeated: true },
-  ]);
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Topic {
-    return new Topic().fromBinary(bytes, options);
-  }
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Topic {
-    return new Topic().fromJson(jsonValue, options);
-  }
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Topic {
-    return new Topic().fromJsonString(jsonString, options);
-  }
-
-  static equals(a: Topic | PlainMessage<Topic> | undefined, b: Topic | PlainMessage<Topic> | undefined): boolean {
-    return proto3.util.equals(Topic, a, b);
-  }
-}
-
-/**
  * @generated from message miiko.v1.TopicListGetRequest
  */
 export class TopicListGetRequest extends Message<TopicListGetRequest> {
@@ -314,106 +420,88 @@ export class TopicListGetResponse extends Message<TopicListGetResponse> {
 }
 
 /**
- * @generated from message miiko.v1.Problem
+ * @generated from message miiko.v1.TopicPostRequest
  */
-export class Problem extends Message<Problem> {
+export class TopicPostRequest extends Message<TopicPostRequest> {
   /**
-   * @generated from field: string problem_id = 1;
+   * @generated from field: string topic_id = 1;
    */
-  problemId = "";
+  topicId = "";
 
   /**
-   * @generated from field: string url = 2;
+   * @generated from field: miiko.v1.Topic topic = 2;
    */
-  url = "";
+  topic?: Topic;
 
   /**
-   * @generated from field: string problem_display_name = 3;
+   * @generated from field: string category_id = 3;
    */
-  problemDisplayName = "";
+  categoryId = "";
 
-  /**
-   * @generated from field: int32 estimation = 4;
-   */
-  estimation = 0;
-
-  /**
-   * @generated from field: repeated miiko.v1.Tag tag_list = 5;
-   */
-  tagList: Tag[] = [];
-
-  constructor(data?: PartialMessage<Problem>) {
+  constructor(data?: PartialMessage<TopicPostRequest>) {
     super();
     proto3.util.initPartial(data, this);
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "miiko.v1.Problem";
+  static readonly typeName = "miiko.v1.TopicPostRequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "problem_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "problem_display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 4, name: "estimation", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
-    { no: 5, name: "tag_list", kind: "message", T: Tag, repeated: true },
+    { no: 1, name: "topic_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "topic", kind: "message", T: Topic },
+    { no: 3, name: "category_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Problem {
-    return new Problem().fromBinary(bytes, options);
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TopicPostRequest {
+    return new TopicPostRequest().fromBinary(bytes, options);
   }
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Problem {
-    return new Problem().fromJson(jsonValue, options);
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TopicPostRequest {
+    return new TopicPostRequest().fromJson(jsonValue, options);
   }
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Problem {
-    return new Problem().fromJsonString(jsonString, options);
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TopicPostRequest {
+    return new TopicPostRequest().fromJsonString(jsonString, options);
   }
 
-  static equals(a: Problem | PlainMessage<Problem> | undefined, b: Problem | PlainMessage<Problem> | undefined): boolean {
-    return proto3.util.equals(Problem, a, b);
+  static equals(a: TopicPostRequest | PlainMessage<TopicPostRequest> | undefined, b: TopicPostRequest | PlainMessage<TopicPostRequest> | undefined): boolean {
+    return proto3.util.equals(TopicPostRequest, a, b);
   }
 }
 
 /**
- * @generated from message miiko.v1.Tag
+ * @generated from message miiko.v1.TopicPostResponse
  */
-export class Tag extends Message<Tag> {
+export class TopicPostResponse extends Message<TopicPostResponse> {
   /**
-   * @generated from field: string category_id = 1;
+   * @generated from field: string topic_id = 1;
    */
-  categoryId = "";
+  topicId = "";
 
-  /**
-   * @generated from field: string topic_display_name = 2;
-   */
-  topicDisplayName = "";
-
-  constructor(data?: PartialMessage<Tag>) {
+  constructor(data?: PartialMessage<TopicPostResponse>) {
     super();
     proto3.util.initPartial(data, this);
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "miiko.v1.Tag";
+  static readonly typeName = "miiko.v1.TopicPostResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "category_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "topic_display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "topic_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Tag {
-    return new Tag().fromBinary(bytes, options);
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TopicPostResponse {
+    return new TopicPostResponse().fromBinary(bytes, options);
   }
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Tag {
-    return new Tag().fromJson(jsonValue, options);
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TopicPostResponse {
+    return new TopicPostResponse().fromJson(jsonValue, options);
   }
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Tag {
-    return new Tag().fromJsonString(jsonString, options);
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TopicPostResponse {
+    return new TopicPostResponse().fromJsonString(jsonString, options);
   }
 
-  static equals(a: Tag | PlainMessage<Tag> | undefined, b: Tag | PlainMessage<Tag> | undefined): boolean {
-    return proto3.util.equals(Tag, a, b);
+  static equals(a: TopicPostResponse | PlainMessage<TopicPostResponse> | undefined, b: TopicPostResponse | PlainMessage<TopicPostResponse> | undefined): boolean {
+    return proto3.util.equals(TopicPostResponse, a, b);
   }
 }
 

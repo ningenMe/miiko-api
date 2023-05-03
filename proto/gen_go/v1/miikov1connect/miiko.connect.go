@@ -43,6 +43,8 @@ const (
 	// MiikoServiceTopicListGetProcedure is the fully-qualified name of the MiikoService's TopicListGet
 	// RPC.
 	MiikoServiceTopicListGetProcedure = "/miiko.v1.MiikoService/TopicListGet"
+	// MiikoServiceTopicPostProcedure is the fully-qualified name of the MiikoService's TopicPost RPC.
+	MiikoServiceTopicPostProcedure = "/miiko.v1.MiikoService/TopicPost"
 )
 
 // MiikoServiceClient is a client for the miiko.v1.MiikoService service.
@@ -50,6 +52,7 @@ type MiikoServiceClient interface {
 	CategoryListGet(context.Context, *connect_go.Request[emptypb.Empty]) (*connect_go.Response[v1.CategoryListGetResponse], error)
 	CategoryPost(context.Context, *connect_go.Request[v1.CategoryPostRequest]) (*connect_go.Response[v1.CategoryPostResponse], error)
 	TopicListGet(context.Context, *connect_go.Request[v1.TopicListGetRequest]) (*connect_go.Response[v1.TopicListGetResponse], error)
+	TopicPost(context.Context, *connect_go.Request[v1.TopicPostRequest]) (*connect_go.Response[v1.TopicPostResponse], error)
 }
 
 // NewMiikoServiceClient constructs a client for the miiko.v1.MiikoService service. By default, it
@@ -77,6 +80,11 @@ func NewMiikoServiceClient(httpClient connect_go.HTTPClient, baseURL string, opt
 			baseURL+MiikoServiceTopicListGetProcedure,
 			opts...,
 		),
+		topicPost: connect_go.NewClient[v1.TopicPostRequest, v1.TopicPostResponse](
+			httpClient,
+			baseURL+MiikoServiceTopicPostProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -85,6 +93,7 @@ type miikoServiceClient struct {
 	categoryListGet *connect_go.Client[emptypb.Empty, v1.CategoryListGetResponse]
 	categoryPost    *connect_go.Client[v1.CategoryPostRequest, v1.CategoryPostResponse]
 	topicListGet    *connect_go.Client[v1.TopicListGetRequest, v1.TopicListGetResponse]
+	topicPost       *connect_go.Client[v1.TopicPostRequest, v1.TopicPostResponse]
 }
 
 // CategoryListGet calls miiko.v1.MiikoService.CategoryListGet.
@@ -102,11 +111,17 @@ func (c *miikoServiceClient) TopicListGet(ctx context.Context, req *connect_go.R
 	return c.topicListGet.CallUnary(ctx, req)
 }
 
+// TopicPost calls miiko.v1.MiikoService.TopicPost.
+func (c *miikoServiceClient) TopicPost(ctx context.Context, req *connect_go.Request[v1.TopicPostRequest]) (*connect_go.Response[v1.TopicPostResponse], error) {
+	return c.topicPost.CallUnary(ctx, req)
+}
+
 // MiikoServiceHandler is an implementation of the miiko.v1.MiikoService service.
 type MiikoServiceHandler interface {
 	CategoryListGet(context.Context, *connect_go.Request[emptypb.Empty]) (*connect_go.Response[v1.CategoryListGetResponse], error)
 	CategoryPost(context.Context, *connect_go.Request[v1.CategoryPostRequest]) (*connect_go.Response[v1.CategoryPostResponse], error)
 	TopicListGet(context.Context, *connect_go.Request[v1.TopicListGetRequest]) (*connect_go.Response[v1.TopicListGetResponse], error)
+	TopicPost(context.Context, *connect_go.Request[v1.TopicPostRequest]) (*connect_go.Response[v1.TopicPostResponse], error)
 }
 
 // NewMiikoServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -131,6 +146,11 @@ func NewMiikoServiceHandler(svc MiikoServiceHandler, opts ...connect_go.HandlerO
 		svc.TopicListGet,
 		opts...,
 	))
+	mux.Handle(MiikoServiceTopicPostProcedure, connect_go.NewUnaryHandler(
+		MiikoServiceTopicPostProcedure,
+		svc.TopicPost,
+		opts...,
+	))
 	return "/miiko.v1.MiikoService/", mux
 }
 
@@ -147,4 +167,8 @@ func (UnimplementedMiikoServiceHandler) CategoryPost(context.Context, *connect_g
 
 func (UnimplementedMiikoServiceHandler) TopicListGet(context.Context, *connect_go.Request[v1.TopicListGetRequest]) (*connect_go.Response[v1.TopicListGetResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("miiko.v1.MiikoService.TopicListGet is not implemented"))
+}
+
+func (UnimplementedMiikoServiceHandler) TopicPost(context.Context, *connect_go.Request[v1.TopicPostRequest]) (*connect_go.Response[v1.TopicPostResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("miiko.v1.MiikoService.TopicPost is not implemented"))
 }

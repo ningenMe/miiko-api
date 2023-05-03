@@ -10,6 +10,7 @@ service MiikoService {
   rpc CategoryListGet (google.protobuf.Empty) returns (CategoryListGetResponse) {}
   rpc CategoryPost (CategoryPostRequest) returns (CategoryPostResponse) {}
   rpc TopicListGet (TopicListGetRequest) returns (TopicListGetResponse) {}
+  rpc TopicPost (TopicPostRequest) returns (TopicPostResponse) {}
 }
 message Category {
   string category_id = 1;
@@ -17,28 +18,11 @@ message Category {
   string category_system_name = 3;
   int32 category_order = 4;
 }
-message CategoryListGetResponse {
-  repeated Category category_list = 1;
-}
-message CategoryPostRequest {
-  string category_id = 1;
-  Category category = 2;
-}
-message CategoryPostResponse {
-  string category_id = 1;
-}
 message Topic {
   string topic_id = 1;
   string topic_display_name = 2;
   int32 topic_order = 3;
   repeated Problem problem_list = 4;
-}
-message TopicListGetRequest {
-  string category_system_name = 1;
-}
-message TopicListGetResponse {
-  Category category = 1;
-  repeated Topic topic_list = 2;
 }
 message Problem {
   string problem_id = 1;
@@ -50,4 +34,31 @@ message Problem {
 message Tag {
   string category_id = 1;
   string topic_display_name = 2;
+}
+
+// req/res
+message CategoryListGetResponse {
+  repeated Category category_list = 1;
+}
+message CategoryPostRequest {
+  string category_id = 1;
+  Category category = 2;
+}
+message CategoryPostResponse {
+  string category_id = 1;
+}
+message TopicListGetRequest {
+  string category_system_name = 1;
+}
+message TopicListGetResponse {
+  Category category = 1;
+  repeated Topic topic_list = 2;
+}
+message TopicPostRequest {
+  string topic_id = 1;
+  Topic topic = 2;
+  string category_id = 3;
+}
+message TopicPostResponse {
+  string topic_id = 1;
 }

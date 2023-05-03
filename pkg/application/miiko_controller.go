@@ -128,3 +128,36 @@ func (s *MiikoController) TopicListGet(
 		TopicList: viewTopicList,
 	}), nil
 }
+
+func (s *MiikoController) TopicPost(
+	ctx context.Context,
+	req *connect.Request[miikov1.TopicPostRequest],
+) (*connect.Response[miikov1.TopicPostResponse], error) {
+	httpreq := http.Request{Header: req.Header()}
+	cookie, err := httpreq.Cookie(infra.CookieName)
+
+	if err != nil {
+		return connect.NewResponse[miikov1.TopicPostResponse](
+			&miikov1.TopicPostResponse{},
+		), err
+	}
+
+	if err = kiwaApiRepository.IsLoggedIn(cookie); err != nil {
+		return connect.NewResponse[miikov1.TopicPostResponse](
+			&miikov1.TopicPostResponse{},
+		), err
+	}
+
+	topicId := req.Msg.TopicId
+	//更新
+	if topicId == "" {
+		topicId = infra.GetNewTopicId()
+	}
+	//TODO upsert
+
+	return connect.NewResponse[miikov1.TopicPostResponse](
+		&miikov1.TopicPostResponse{
+			TopicId: topicId,
+		},
+	), nil
+}
