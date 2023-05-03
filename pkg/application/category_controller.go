@@ -2,6 +2,7 @@ package application
 
 import (
 	"context"
+	"fmt"
 	"github.com/bufbuild/connect-go"
 	"github.com/ningenMe/miiko-api/pkg/infra"
 	miikov1 "github.com/ningenMe/miiko-api/proto/gen_go/v1"
@@ -41,6 +42,8 @@ func (s *MiikoController) CategoryPost(
 	ctx context.Context,
 	req *connect.Request[miikov1.CategoryPostRequest],
 ) (*connect.Response[miikov1.CategoryPostResponse], error) {
+	fmt.Println(req.Header())
+	fmt.Println(req.Header().Get("Cookie"))
 
 	categoryId := req.Msg.CategoryId
 	if req.Msg.GetCategory() != nil {
