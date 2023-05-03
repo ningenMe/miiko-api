@@ -61,7 +61,8 @@ func (TopicRepository) Upsert(topic *TopicDto) {
 
 	_, err := ComproMysql.NamedExec(`INSERT INTO topic (topic_id, category_id, topic_display_name, topic_order) 
                                  VALUES (:topic_id, :category_id, :topic_display_name, :topic_order) 
-                                 ON DUPLICATE KEY UPDATE topic_id=VALUES(topic_id), category_id=VALUES(category_id), topic_display_name=VALUES(topic_display_name), topic_order=VALUES(topic_order)                                     
+                                 ON DUPLICATE KEY UPDATE 
+                                     category_id=VALUES(category_id), topic_display_name=VALUES(topic_display_name), topic_order=VALUES(topic_order)                                     
                                      `, topic)
 	if err != nil {
 		fmt.Println(err)

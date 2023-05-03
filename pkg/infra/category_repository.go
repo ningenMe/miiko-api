@@ -53,8 +53,11 @@ func (CategoryRepository) Get(categorySystemName string) *CategoryDto {
 
 func (CategoryRepository) Upsert(category *CategoryDto) {
 
-	_, err := ComproMysql.NamedExec(`REPLACE INTO category (category_id, category_display_name, category_system_name, category_order) 
-                                 VALUES (:category_id, :category_display_name, :category_system_name, :category_order)`, category)
+	_, err := ComproMysql.NamedExec(`INSERT INTO category (category_id, category_display_name, category_system_name, category_order) 
+                                 VALUES (:category_id, :category_display_name, :category_system_name, :category_order)
+                                 ON DUPLICATE KEY UPDATE 
+                                     category_display_name=VALUES(category_display_name), category_system_name=VALUES(category_system_name), category_order=VALUES(category_order)
+                                 `, category)
 	if err != nil {
 		fmt.Println(err)
 	}
