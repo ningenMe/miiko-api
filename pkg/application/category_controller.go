@@ -7,6 +7,7 @@ import (
 	"github.com/ningenMe/miiko-api/pkg/infra"
 	miikov1 "github.com/ningenMe/miiko-api/proto/gen_go/v1"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"net/http"
 )
 
 type MiikoController struct{}
@@ -42,8 +43,16 @@ func (s *MiikoController) CategoryPost(
 	ctx context.Context,
 	req *connect.Request[miikov1.CategoryPostRequest],
 ) (*connect.Response[miikov1.CategoryPostResponse], error) {
-	fmt.Println(req.Header())
-	fmt.Println(req.Header().Get("Cookie"))
+	httpreq := http.Request{Header: req.Header()}
+	cookie, err := httpreq.Cookie(infra.CookieName)
+
+	fmt.Println(cookie)
+
+	if err != nil {
+		return connect.NewResponse[miikov1.CategoryPostResponse](
+			&miikov1.CategoryPostResponse{},
+		), err
+	}
 
 	categoryId := req.Msg.CategoryId
 	if req.Msg.GetCategory() != nil {
