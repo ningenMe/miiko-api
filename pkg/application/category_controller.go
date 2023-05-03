@@ -2,7 +2,6 @@ package application
 
 import (
 	"context"
-	"fmt"
 	"github.com/bufbuild/connect-go"
 	"github.com/ningenMe/miiko-api/pkg/infra"
 	miikov1 "github.com/ningenMe/miiko-api/proto/gen_go/v1"
@@ -14,6 +13,7 @@ type MiikoController struct{}
 
 var categoryRepository = infra.CategoryRepository{}
 var topicRepository = infra.TopicRepository{}
+var kiwaApiRepository = infra.KiwaApiRepository{}
 
 func (s *MiikoController) CategoryListGet(
 	ctx context.Context,
@@ -46,9 +46,13 @@ func (s *MiikoController) CategoryPost(
 	httpreq := http.Request{Header: req.Header()}
 	cookie, err := httpreq.Cookie(infra.CookieName)
 
-	fmt.Println(cookie)
-
 	if err != nil {
+		return connect.NewResponse[miikov1.CategoryPostResponse](
+			&miikov1.CategoryPostResponse{},
+		), err
+	}
+
+	if err = kiwaApiRepository.IsLoggedIn(cookie); err != nil {
 		return connect.NewResponse[miikov1.CategoryPostResponse](
 			&miikov1.CategoryPostResponse{},
 		), err
