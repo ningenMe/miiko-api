@@ -20,7 +20,7 @@ type UsersMeGetResponseAuthority struct {
 }
 
 func (KiwaApiRepository) IsLoggedIn(cookie *http.Cookie) error {
-	req, _ := http.NewRequest("GET", "https://ningenme.net/users/me", nil)
+	req, _ := http.NewRequest("GET", "https://kiwa-api.ningenme.net/users/me", nil)
 	req.AddCookie(cookie)
 
 	client := &http.Client{Transport: http.DefaultTransport}
