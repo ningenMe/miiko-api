@@ -3,6 +3,7 @@ package infra
 import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/jmoiron/sqlx"
 )
 
 type ProblemRepository struct{}
@@ -25,8 +26,15 @@ func (ProblemRepository) GetProblemListByTopicId(topicId string) []*ProblemDto {
 		if err = rows.StructScan(c); err != nil {
 			fmt.Println(err)
 		}
-		c.TagList = getTagList(c.ProblemId)
 		list = append(list, c)
+	}
+	var problemIdlist []string
+	for _, problem := range list {
+		problemIdlist = append(problemIdlist, problem.ProblemId)
+	}
+	tagMap := getTagMap(problemIdlist)
+	for _, problem := range list {
+		problem.TagList = tagMap[problem.ProblemId]
 	}
 
 	return list
@@ -52,33 +60,44 @@ func (ProblemRepository) GetProblemList(sortType string, offset int32, limit int
 		if err = rows.StructScan(c); err != nil {
 			fmt.Println(err)
 		}
-		c.TagList = getTagList(c.ProblemId)
 		list = append(list, c)
+	}
+
+	var problemIdlist []string
+	for _, problem := range list {
+		problemIdlist = append(problemIdlist, problem.ProblemId)
+	}
+	tagMap := getTagMap(problemIdlist)
+	for _, problem := range list {
+		problem.TagList = tagMap[problem.ProblemId]
 	}
 
 	return list
 }
 
-func getTagList(problemId string) []*TagDto {
-	var list []*TagDto
+func getTagMap(problemIdList []string) map[string][]*TagDto {
+	mp := make(map[string][]*TagDto)
 
-	rows, err := ComproMysql.NamedQuery(
-		`SELECT t.topic_id, category_id, topic_display_name FROM topic AS t JOIN relation_topic_problem AS rtp ON t.topic_id = rtp.topic_id WHERE problem_id = :problemId ORDER BY topic_order ASC`,
-		map[string]interface{}{
-			"problemId": problemId,
-		})
+	sql := `SELECT t.topic_id, category_id, topic_display_name, problem_id FROM topic AS t JOIN relation_topic_problem AS rtp ON t.topic_id = rtp.topic_id WHERE problem_id IN (?) ORDER BY topic_order ASC`
+
+	sql, params, err := sqlx.In(sql, problemIdList)
 	if err != nil {
 		fmt.Println(err)
-		return list
+		return mp
 	}
 
-	for rows.Next() {
-		c := &TagDto{}
-		if err = rows.StructScan(c); err != nil {
-			fmt.Println(err)
-		}
-		list = append(list, c)
+	var list []TagDto
+	err = ComproMysql.Select(&list, ComproMysql.Rebind(sql), params...)
+	if err != nil {
+		fmt.Println(err)
+		return mp
 	}
 
-	return list
+	for _, tag := range list {
+		tmpList := mp[tag.ProblemId]
+		tmpList = append(tmpList, &tag)
+		mp[tag.ProblemId] = tmpList
+	}
+
+	return mp
 }

@@ -41,6 +41,7 @@ type ProblemDto struct {
 }
 
 type TagDto struct {
+	ProblemId        string `db:"problem_id""`
 	TopicId          string `db:"topic_id"`
 	CategoryId       string `db:"category_id"`
 	TopicDisplayName string `db:"topic_display_name"`
