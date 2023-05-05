@@ -30,6 +30,8 @@ func (s *MiikoController) CategoryListGet(
 			CategoryDisplayName: category.CategoryDisplayName,
 			CategorySystemName:  category.CategorySystemName,
 			CategoryOrder:       category.CategoryOrder,
+			TopicSize:           category.TopicSize,
+			ProblemSize:         category.ProblemSize,
 		})
 	}
 

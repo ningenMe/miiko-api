@@ -30,6 +30,16 @@ export class Category extends Message<Category> {
    */
   categoryOrder = 0;
 
+  /**
+   * @generated from field: int32 topic_size = 5;
+   */
+  topicSize = 0;
+
+  /**
+   * @generated from field: int32 problem_size = 6;
+   */
+  problemSize = 0;
+
   constructor(data?: PartialMessage<Category>) {
     super();
     proto3.util.initPartial(data, this);
@@ -42,6 +52,8 @@ export class Category extends Message<Category> {
     { no: 2, name: "category_display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "category_system_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "category_order", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 5, name: "topic_size", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 6, name: "problem_size", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Category {

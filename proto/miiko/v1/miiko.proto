@@ -17,6 +17,8 @@ message Category {
   string category_display_name = 2;
   string category_system_name = 3;
   int32 category_order = 4;
+  int32 topic_size = 5;
+  int32 problem_size = 6;
 }
 message Topic {
   string topic_id = 1;

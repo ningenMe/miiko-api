@@ -10,7 +10,7 @@ type CategoryRepository struct{}
 var topicRepository = TopicRepository{}
 
 func (CategoryRepository) GetList() []*CategoryDto {
-	rows, err := ComproMysql.Queryx(`SELECT category_id, category_display_name, category_system_name, category_order FROM category ORDER BY category_order ASC`)
+	rows, err := ComproMysql.Queryx(`SELECT category_id, category_display_name, category_system_name, category_order, topic_size, problem_size FROM category ORDER BY category_order ASC`)
 	if err != nil {
 		fmt.Println(err)
 	}

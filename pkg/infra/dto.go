@@ -12,6 +12,8 @@ type CategoryDto struct {
 	CategoryDisplayName string `db:"category_display_name"`
 	CategorySystemName  string `db:"category_system_name"`
 	CategoryOrder       int32  `db:"category_order"`
+	TopicSize           int32  `db:"topic_size"`
+	ProblemSize         int32  `db:"problem_size"`
 }
 
 func GetNewCategoryId() string {
