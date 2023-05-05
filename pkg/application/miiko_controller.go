@@ -153,6 +153,7 @@ func (s *MiikoController) TopicPost(
 	if topicId == "" {
 		topicId = infra.GetNewTopicId()
 	}
+
 	topicRepository.Upsert(
 		&infra.TopicDto{
 			TopicId:          topicId,
@@ -160,6 +161,8 @@ func (s *MiikoController) TopicPost(
 			TopicDisplayName: req.Msg.GetTopic().GetTopicDisplayName(),
 			TopicOrder:       req.Msg.GetTopic().GetTopicOrder(),
 		})
+
+	topicRepository.UpsertProblemCount(topicId)
 
 	return connect.NewResponse[miikov1.TopicPostResponse](
 		&miikov1.TopicPostResponse{

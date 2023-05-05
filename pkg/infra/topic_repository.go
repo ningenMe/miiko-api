@@ -7,6 +7,8 @@ import (
 
 type TopicRepository struct{}
 
+var problemRepository = ProblemRepository{}
+
 func (TopicRepository) GetListByCategoryId(categoryId string) []*TopicDto {
 	var list []*TopicDto
 
@@ -26,31 +28,7 @@ func (TopicRepository) GetListByCategoryId(categoryId string) []*TopicDto {
 		if err = rows.StructScan(c); err != nil {
 			fmt.Println(err)
 		}
-		c.ProblemList = getProblemWithListByTopicId(c.TopicId)
-		list = append(list, c)
-	}
-
-	return list
-}
-
-func getProblemWithListByTopicId(topicId string) []*ProblemDto {
-	var list []*ProblemDto
-
-	rows, err := ComproMysql.NamedQuery(
-		`SELECT p.problem_id, url, problem_display_name, estimation FROM problem AS p JOIN relation_topic_problem AS rtp ON p.problem_id = rtp.problem_id WHERE rtp.topic_id = :topicId ORDER BY estimation`,
-		map[string]interface{}{
-			"topicId": topicId,
-		})
-	if err != nil {
-		fmt.Println(err)
-		return list
-	}
-
-	for rows.Next() {
-		c := &ProblemDto{}
-		if err = rows.StructScan(c); err != nil {
-			fmt.Println(err)
-		}
+		c.ProblemList = problemRepository.GetProblemListByTopicId(c.TopicId)
 		list = append(list, c)
 	}
 
@@ -64,6 +42,18 @@ func (TopicRepository) Upsert(topic *TopicDto) {
                                  ON DUPLICATE KEY UPDATE 
                                      category_id=VALUES(category_id), topic_display_name=VALUES(topic_display_name), topic_order=VALUES(topic_order)                                     
                                      `, topic)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func (TopicRepository) UpsertProblemCount(topicId string) {
+	problemCount := len(problemRepository.GetProblemListByTopicId(topicId))
+	_, err := ComproMysql.NamedExec(`UPDATE topic SET problem_count = :problemCount WHERE topic_id = :topicId`,
+		map[string]interface{}{
+			"topicId":      topicId,
+			"problemCount": problemCount,
+		})
 	if err != nil {
 		fmt.Println(err)
 	}
