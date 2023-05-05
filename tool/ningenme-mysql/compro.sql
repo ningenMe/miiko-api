@@ -14,6 +14,8 @@ CREATE TABLE `category`
     `category_display_name` varchar(511) NOT NULL,
     `category_system_name`  varchar(511) NOT NULL,
     `category_order`        int(11)      NOT NULL,
+    `topic_size`            int(11)      NOT NULL DEFAULT 0,
+    `problem_size`          int(11)      NOT NULL DEFAULT 0,
     `created_time`          timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_time`          timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`category_id`),
@@ -21,22 +23,23 @@ CREATE TABLE `category`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
+# ALTER TABLE category
+#     ADD `topic_size` int(11) NOT NULL DEFAULT 0 AFTER `category_order`;
+# ALTER TABLE category
+#     ADD `problem_size` int(11) NOT NULL DEFAULT 0 AFTER `topic_size`;
+
 CREATE TABLE `topic`
 (
     `topic_id`           varchar(255) NOT NULL,
     `category_id`        varchar(255) NOT NULL,
     `topic_display_name` varchar(511) NOT NULL,
     `topic_order`        int(11)      NOT NULL,
-    `problem_count`      int(11)      NOT NULL DEFAULT 0,
     `created_time`       timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_time`       timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`topic_id`),
     FOREIGN KEY `category_id_foreign` (`category_id`) REFERENCES `category` (`category_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
-
-# ALTER TABLE topic
-#     ADD `problem_count` int(11) NOT NULL DEFAULT 0 AFTER `topic_order`;
 
 CREATE TABLE `problem`
 (

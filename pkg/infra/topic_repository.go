@@ -46,15 +46,3 @@ func (TopicRepository) Upsert(topic *TopicDto) {
 		fmt.Println(err)
 	}
 }
-
-func (TopicRepository) UpsertProblemCount(topicId string) {
-	problemCount := len(problemRepository.GetProblemListByTopicId(topicId))
-	_, err := ComproMysql.NamedExec(`UPDATE topic SET problem_count = :problemCount WHERE topic_id = :topicId`,
-		map[string]interface{}{
-			"topicId":      topicId,
-			"problemCount": problemCount,
-		})
-	if err != nil {
-		fmt.Println(err)
-	}
-}

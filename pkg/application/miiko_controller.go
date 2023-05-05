@@ -71,6 +71,7 @@ func (s *MiikoController) CategoryPost(
 				CategorySystemName:  req.Msg.GetCategory().GetCategorySystemName(),
 				CategoryOrder:       req.Msg.GetCategory().GetCategoryOrder(),
 			})
+		categoryRepository.UpdateTopicSizeAndProblemSize(categoryId)
 	} else {
 		categoryRepository.Delete(categoryId)
 	}
@@ -161,8 +162,6 @@ func (s *MiikoController) TopicPost(
 			TopicDisplayName: req.Msg.GetTopic().GetTopicDisplayName(),
 			TopicOrder:       req.Msg.GetTopic().GetTopicOrder(),
 		})
-
-	topicRepository.UpsertProblemCount(topicId)
 
 	return connect.NewResponse[miikov1.TopicPostResponse](
 		&miikov1.TopicPostResponse{

@@ -7,6 +7,8 @@ import (
 
 type CategoryRepository struct{}
 
+var topicRepository = TopicRepository{}
+
 func (CategoryRepository) GetList() []*CategoryDto {
 	rows, err := ComproMysql.Queryx(`SELECT category_id, category_display_name, category_system_name, category_order FROM category ORDER BY category_order ASC`)
 	if err != nil {
@@ -67,6 +69,24 @@ func (CategoryRepository) Delete(categoryId string) {
 	_, err := ComproMysql.NamedExec(`DELETE FROM category WHERE category_id = :categoryId`,
 		map[string]interface{}{
 			"categoryId": categoryId,
+		})
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func (CategoryRepository) UpdateTopicSizeAndProblemSize(categoryId string) {
+	topicList := topicRepository.GetListByCategoryId(categoryId)
+	topicSize := len(topicList)
+	problemSize := 0
+	for _, topic := range topicList {
+		problemSize += len(problemRepository.GetProblemListByTopicId(topic.TopicId))
+	}
+	_, err := ComproMysql.NamedExec(`UPDATE category SET topic_size = :topicSize, problem_size = :problemSize WHERE category_id = :categoryId`,
+		map[string]interface{}{
+			"categoryId":  categoryId,
+			"topicSize":   topicSize,
+			"problemSize": problemSize,
 		})
 	if err != nil {
 		fmt.Println(err)
