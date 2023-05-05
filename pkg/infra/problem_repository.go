@@ -93,10 +93,12 @@ func getTagMap(problemIdList []string) map[string][]*TagDto {
 		return mp
 	}
 
-	for _, tag := range list {
-		tmpList := mp[tag.ProblemId]
-		tmpList = append(tmpList, &tag)
-		mp[tag.ProblemId] = tmpList
+	for idx, _ := range list {
+		tmpList := mp[list[idx].ProblemId]
+		fmt.Println(list[idx], tmpList)
+		tmpList = append(tmpList, &list[idx])
+		fmt.Println(list[idx], tmpList)
+		mp[list[idx].ProblemId] = tmpList
 	}
 
 	return mp
