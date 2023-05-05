@@ -37,7 +37,13 @@ type ProblemDto struct {
 	Url                string `db:"url"`
 	ProblemDisplayName string `db:"problem_display_name"`
 	Estimation         int32  `db:"estimation"`
-	TagList            string `db:"tag_list"`
+	TagList            []*TagDto
+}
+
+type TagDto struct {
+	TopicId          string `db:"topic_id"`
+	CategoryId       string `db:"category_id"`
+	TopicDisplayName string `db:"topic_display_name"`
 }
 
 // https://qiita.com/nakaryooo/items/7d269525a288c4b3ecda

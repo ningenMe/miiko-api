@@ -199,7 +199,12 @@ export class Tag extends Message<Tag> {
   categoryId = "";
 
   /**
-   * @generated from field: string topic_display_name = 2;
+   * @generated from field: string topic_id = 2;
+   */
+  topicId = "";
+
+  /**
+   * @generated from field: string topic_display_name = 3;
    */
   topicDisplayName = "";
 
@@ -212,7 +217,8 @@ export class Tag extends Message<Tag> {
   static readonly typeName = "miiko.v1.Tag";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "category_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "topic_display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "topic_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "topic_display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Tag {
@@ -514,6 +520,118 @@ export class TopicPostResponse extends Message<TopicPostResponse> {
 
   static equals(a: TopicPostResponse | PlainMessage<TopicPostResponse> | undefined, b: TopicPostResponse | PlainMessage<TopicPostResponse> | undefined): boolean {
     return proto3.util.equals(TopicPostResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message miiko.v1.ProblemListGetRequest
+ */
+export class ProblemListGetRequest extends Message<ProblemListGetRequest> {
+  /**
+   * @generated from field: int32 offset = 1;
+   */
+  offset = 0;
+
+  /**
+   * @generated from field: int32 limit = 2;
+   */
+  limit = 0;
+
+  /**
+   * @generated from field: miiko.v1.ProblemListGetRequest.SortType sort_type = 3;
+   */
+  sortType = ProblemListGetRequest_SortType.UNSPECIFIED;
+
+  constructor(data?: PartialMessage<ProblemListGetRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "miiko.v1.ProblemListGetRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "offset", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: "limit", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 3, name: "sort_type", kind: "enum", T: proto3.getEnumType(ProblemListGetRequest_SortType) },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ProblemListGetRequest {
+    return new ProblemListGetRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ProblemListGetRequest {
+    return new ProblemListGetRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ProblemListGetRequest {
+    return new ProblemListGetRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: ProblemListGetRequest | PlainMessage<ProblemListGetRequest> | undefined, b: ProblemListGetRequest | PlainMessage<ProblemListGetRequest> | undefined): boolean {
+    return proto3.util.equals(ProblemListGetRequest, a, b);
+  }
+}
+
+/**
+ * @generated from enum miiko.v1.ProblemListGetRequest.SortType
+ */
+export enum ProblemListGetRequest_SortType {
+  /**
+   * @generated from enum value: SORT_TYPE_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: SORT_TYPE_CREATED_TIME = 1;
+   */
+  CREATED_TIME = 1,
+
+  /**
+   * @generated from enum value: SORT_TYPE_ESTIMATION = 2;
+   */
+  ESTIMATION = 2,
+}
+// Retrieve enum metadata with: proto3.getEnumType(ProblemListGetRequest_SortType)
+proto3.util.setEnumType(ProblemListGetRequest_SortType, "miiko.v1.ProblemListGetRequest.SortType", [
+  { no: 0, name: "SORT_TYPE_UNSPECIFIED" },
+  { no: 1, name: "SORT_TYPE_CREATED_TIME" },
+  { no: 2, name: "SORT_TYPE_ESTIMATION" },
+]);
+
+/**
+ * @generated from message miiko.v1.ProblemListGetResponse
+ */
+export class ProblemListGetResponse extends Message<ProblemListGetResponse> {
+  /**
+   * @generated from field: repeated miiko.v1.Problem problem_list = 1;
+   */
+  problemList: Problem[] = [];
+
+  constructor(data?: PartialMessage<ProblemListGetResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "miiko.v1.ProblemListGetResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "problem_list", kind: "message", T: Problem, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ProblemListGetResponse {
+    return new ProblemListGetResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ProblemListGetResponse {
+    return new ProblemListGetResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ProblemListGetResponse {
+    return new ProblemListGetResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: ProblemListGetResponse | PlainMessage<ProblemListGetResponse> | undefined, b: ProblemListGetResponse | PlainMessage<ProblemListGetResponse> | undefined): boolean {
+    return proto3.util.equals(ProblemListGetResponse, a, b);
   }
 }
 

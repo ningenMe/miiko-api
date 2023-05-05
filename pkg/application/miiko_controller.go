@@ -13,6 +13,7 @@ type MiikoController struct{}
 
 var categoryRepository = infra.CategoryRepository{}
 var topicRepository = infra.TopicRepository{}
+var problemRepository = infra.ProblemRepository{}
 var kiwaApiRepository = infra.KiwaApiRepository{}
 
 func (s *MiikoController) CategoryListGet(
@@ -110,11 +111,22 @@ func (s *MiikoController) TopicListGet(
 
 		var viewProblemList []*miikov1.Problem
 		for _, problem := range topic.ProblemList {
+
+			var viewTagList []*miikov1.Tag
+			for _, tag := range problem.TagList {
+				viewTagList = append(viewTagList, &miikov1.Tag{
+					TopicId:          tag.TopicId,
+					CategoryId:       tag.CategoryId,
+					TopicDisplayName: tag.TopicDisplayName,
+				})
+			}
+
 			viewProblemList = append(viewProblemList, &miikov1.Problem{
 				ProblemId:          problem.ProblemId,
 				Url:                problem.Url,
 				ProblemDisplayName: problem.ProblemDisplayName,
 				Estimation:         problem.Estimation,
+				TagList:            viewTagList,
 			})
 		}
 
@@ -170,4 +182,53 @@ func (s *MiikoController) TopicPost(
 			TopicId: topicId,
 		},
 	), nil
+}
+
+func (s *MiikoController) ProblemListGet(
+	ctx context.Context,
+	req *connect.Request[miikov1.ProblemListGetRequest],
+) (*connect.Response[miikov1.ProblemListGetResponse], error) {
+
+	var sortType string
+	switch req.Msg.SortType.String() {
+	case "SORT_TYPE_CREATED_TIME":
+		sortType = "created_time"
+	case "SORT_TYPE_ESTIMATION":
+		sortType = "estimation"
+	default:
+		return connect.NewResponse[miikov1.ProblemListGetResponse](
+			&miikov1.ProblemListGetResponse{}), nil
+	}
+
+	list := problemRepository.GetProblemList(
+		sortType,
+		req.Msg.Offset,
+		req.Msg.Limit,
+	)
+
+	var viewProblemList []*miikov1.Problem
+	for _, problem := range list {
+
+		var viewTagList []*miikov1.Tag
+		for _, tag := range problem.TagList {
+			viewTagList = append(viewTagList, &miikov1.Tag{
+				TopicId:          tag.TopicId,
+				CategoryId:       tag.CategoryId,
+				TopicDisplayName: tag.TopicDisplayName,
+			})
+		}
+
+		viewProblemList = append(viewProblemList, &miikov1.Problem{
+			ProblemId:          problem.ProblemId,
+			Url:                problem.Url,
+			ProblemDisplayName: problem.ProblemDisplayName,
+			Estimation:         problem.Estimation,
+			TagList:            viewTagList,
+		})
+	}
+
+	return connect.NewResponse[miikov1.ProblemListGetResponse](
+		&miikov1.ProblemListGetResponse{
+			ProblemList: viewProblemList,
+		}), nil
 }
