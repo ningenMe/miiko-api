@@ -28,7 +28,7 @@ func (TopicRepository) GetListByCategoryId(categoryId string) []*TopicDto {
 		if err = rows.StructScan(c); err != nil {
 			fmt.Println(err)
 		}
-		c.ProblemList = problemRepository.GetProblemListByTopicId(c.TopicId)
+		c.ProblemList = problemRepository.GetProblemListByTopicId(c.TopicId, false)
 		list = append(list, c)
 	}
 

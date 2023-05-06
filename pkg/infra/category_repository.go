@@ -80,7 +80,7 @@ func (CategoryRepository) UpdateTopicSizeAndProblemSize(categoryId string) {
 	topicSize := len(topicList)
 	problemSize := 0
 	for _, topic := range topicList {
-		problemSize += len(problemRepository.GetProblemListByTopicId(topic.TopicId))
+		problemSize += len(problemRepository.GetProblemListByTopicId(topic.TopicId, false))
 	}
 	_, err := ComproMysql.NamedExec(`UPDATE category SET topic_size = :topicSize, problem_size = :problemSize WHERE category_id = :categoryId`,
 		map[string]interface{}{

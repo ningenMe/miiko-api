@@ -48,6 +48,8 @@ const (
 	// MiikoServiceProblemListGetProcedure is the fully-qualified name of the MiikoService's
 	// ProblemListGet RPC.
 	MiikoServiceProblemListGetProcedure = "/miiko.v1.MiikoService/ProblemListGet"
+	// MiikoServiceProblemGetProcedure is the fully-qualified name of the MiikoService's ProblemGet RPC.
+	MiikoServiceProblemGetProcedure = "/miiko.v1.MiikoService/ProblemGet"
 )
 
 // MiikoServiceClient is a client for the miiko.v1.MiikoService service.
@@ -57,6 +59,7 @@ type MiikoServiceClient interface {
 	TopicListGet(context.Context, *connect_go.Request[v1.TopicListGetRequest]) (*connect_go.Response[v1.TopicListGetResponse], error)
 	TopicPost(context.Context, *connect_go.Request[v1.TopicPostRequest]) (*connect_go.Response[v1.TopicPostResponse], error)
 	ProblemListGet(context.Context, *connect_go.Request[v1.ProblemListGetRequest]) (*connect_go.Response[v1.ProblemListGetResponse], error)
+	ProblemGet(context.Context, *connect_go.Request[v1.ProblemGetRequest]) (*connect_go.Response[v1.ProblemGetResponse], error)
 }
 
 // NewMiikoServiceClient constructs a client for the miiko.v1.MiikoService service. By default, it
@@ -94,6 +97,11 @@ func NewMiikoServiceClient(httpClient connect_go.HTTPClient, baseURL string, opt
 			baseURL+MiikoServiceProblemListGetProcedure,
 			opts...,
 		),
+		problemGet: connect_go.NewClient[v1.ProblemGetRequest, v1.ProblemGetResponse](
+			httpClient,
+			baseURL+MiikoServiceProblemGetProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -104,6 +112,7 @@ type miikoServiceClient struct {
 	topicListGet    *connect_go.Client[v1.TopicListGetRequest, v1.TopicListGetResponse]
 	topicPost       *connect_go.Client[v1.TopicPostRequest, v1.TopicPostResponse]
 	problemListGet  *connect_go.Client[v1.ProblemListGetRequest, v1.ProblemListGetResponse]
+	problemGet      *connect_go.Client[v1.ProblemGetRequest, v1.ProblemGetResponse]
 }
 
 // CategoryListGet calls miiko.v1.MiikoService.CategoryListGet.
@@ -131,6 +140,11 @@ func (c *miikoServiceClient) ProblemListGet(ctx context.Context, req *connect_go
 	return c.problemListGet.CallUnary(ctx, req)
 }
 
+// ProblemGet calls miiko.v1.MiikoService.ProblemGet.
+func (c *miikoServiceClient) ProblemGet(ctx context.Context, req *connect_go.Request[v1.ProblemGetRequest]) (*connect_go.Response[v1.ProblemGetResponse], error) {
+	return c.problemGet.CallUnary(ctx, req)
+}
+
 // MiikoServiceHandler is an implementation of the miiko.v1.MiikoService service.
 type MiikoServiceHandler interface {
 	CategoryListGet(context.Context, *connect_go.Request[emptypb.Empty]) (*connect_go.Response[v1.CategoryListGetResponse], error)
@@ -138,6 +152,7 @@ type MiikoServiceHandler interface {
 	TopicListGet(context.Context, *connect_go.Request[v1.TopicListGetRequest]) (*connect_go.Response[v1.TopicListGetResponse], error)
 	TopicPost(context.Context, *connect_go.Request[v1.TopicPostRequest]) (*connect_go.Response[v1.TopicPostResponse], error)
 	ProblemListGet(context.Context, *connect_go.Request[v1.ProblemListGetRequest]) (*connect_go.Response[v1.ProblemListGetResponse], error)
+	ProblemGet(context.Context, *connect_go.Request[v1.ProblemGetRequest]) (*connect_go.Response[v1.ProblemGetResponse], error)
 }
 
 // NewMiikoServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -172,6 +187,11 @@ func NewMiikoServiceHandler(svc MiikoServiceHandler, opts ...connect_go.HandlerO
 		svc.ProblemListGet,
 		opts...,
 	))
+	mux.Handle(MiikoServiceProblemGetProcedure, connect_go.NewUnaryHandler(
+		MiikoServiceProblemGetProcedure,
+		svc.ProblemGet,
+		opts...,
+	))
 	return "/miiko.v1.MiikoService/", mux
 }
 
@@ -196,4 +216,8 @@ func (UnimplementedMiikoServiceHandler) TopicPost(context.Context, *connect_go.R
 
 func (UnimplementedMiikoServiceHandler) ProblemListGet(context.Context, *connect_go.Request[v1.ProblemListGetRequest]) (*connect_go.Response[v1.ProblemListGetResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("miiko.v1.MiikoService.ProblemListGet is not implemented"))
+}
+
+func (UnimplementedMiikoServiceHandler) ProblemGet(context.Context, *connect_go.Request[v1.ProblemGetRequest]) (*connect_go.Response[v1.ProblemGetResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("miiko.v1.MiikoService.ProblemGet is not implemented"))
 }

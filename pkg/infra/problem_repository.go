@@ -8,7 +8,7 @@ import (
 
 type ProblemRepository struct{}
 
-func (ProblemRepository) GetProblemListByTopicId(topicId string) []*ProblemDto {
+func (ProblemRepository) GetProblemListByTopicId(topicId string, isRequiredTag bool) []*ProblemDto {
 	var list []*ProblemDto
 
 	rows, err := ComproMysql.NamedQuery(
@@ -32,9 +32,12 @@ func (ProblemRepository) GetProblemListByTopicId(topicId string) []*ProblemDto {
 	for _, problem := range list {
 		problemIdlist = append(problemIdlist, problem.ProblemId)
 	}
-	tagMap := getTagMap(problemIdlist)
-	for _, problem := range list {
-		problem.TagList = tagMap[problem.ProblemId]
+
+	if isRequiredTag {
+		tagMap := getTagMap(problemIdlist)
+		for _, problem := range list {
+			problem.TagList = tagMap[problem.ProblemId]
+		}
 	}
 
 	return list
@@ -75,6 +78,33 @@ func (ProblemRepository) GetProblemList(sortType string, offset int32, limit int
 	return list
 }
 
+func (ProblemRepository) GetProblem(problemId string) *ProblemDto {
+	var dto *ProblemDto
+
+	rows, err := ComproMysql.NamedQuery(
+		`SELECT problem_id, url, problem_display_name, estimation FROM problem WHERE problem_id = :problemId`,
+		map[string]interface{}{
+			"problemId": problemId,
+		})
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+
+	for rows.Next() {
+		c := &ProblemDto{}
+		if err = rows.StructScan(c); err != nil {
+			fmt.Println(err)
+		}
+		dto = c
+	}
+
+	tagMap := getTagMap([]string{dto.ProblemId})
+	dto.TagList = tagMap[dto.ProblemId]
+
+	return dto
+}
+
 func getTagMap(problemIdList []string) map[string][]*TagDto {
 	mp := make(map[string][]*TagDto)
 
@@ -95,9 +125,7 @@ func getTagMap(problemIdList []string) map[string][]*TagDto {
 
 	for idx, _ := range list {
 		tmpList := mp[list[idx].ProblemId]
-		fmt.Println(list[idx], tmpList)
 		tmpList = append(tmpList, &list[idx])
-		fmt.Println(list[idx], tmpList)
 		mp[list[idx].ProblemId] = tmpList
 	}
 
