@@ -5,7 +5,6 @@ import (
 	"github.com/bufbuild/connect-go"
 	"github.com/ningenMe/miiko-api/pkg/infra"
 	miikov1 "github.com/ningenMe/miiko-api/proto/gen_go/v1"
-	"google.golang.org/protobuf/types/known/emptypb"
 	"net/http"
 )
 
@@ -18,13 +17,25 @@ var kiwaApiRepository = infra.KiwaApiRepository{}
 
 func (s *MiikoController) CategoryListGet(
 	ctx context.Context,
-	req *connect.Request[emptypb.Empty],
+	req *connect.Request[miikov1.CategoryListGetRequest],
 ) (*connect.Response[miikov1.CategoryListGetResponse], error) {
 
 	list := categoryRepository.GetList()
 
 	var viewList []*miikov1.Category
 	for _, category := range list {
+
+		var viewTopicList []*miikov1.Topic
+		if req.Msg.IsRequiredTopic {
+			topicList := topicRepository.GetListByCategoryId(category.CategoryId, false)
+			for _, topic := range topicList {
+				viewTopicList = append(viewTopicList, &miikov1.Topic{
+					TopicId:          topic.TopicId,
+					TopicDisplayName: topic.TopicDisplayName,
+					TopicOrder:       topic.TopicOrder,
+				})
+			}
+		}
 
 		viewList = append(viewList, &miikov1.Category{
 			CategoryId:          category.CategoryId,
@@ -33,6 +44,7 @@ func (s *MiikoController) CategoryListGet(
 			CategoryOrder:       category.CategoryOrder,
 			TopicSize:           category.TopicSize,
 			ProblemSize:         category.ProblemSize,
+			TopicList:           viewTopicList,
 		})
 	}
 
@@ -103,7 +115,7 @@ func (s *MiikoController) TopicListGet(
 			CategoryDisplayName: categoryDto.CategoryDisplayName,
 			CategoryOrder:       categoryDto.CategoryOrder,
 		}
-		list = topicRepository.GetListByCategoryId(categoryDto.CategoryId)
+		list = topicRepository.GetListByCategoryId(categoryDto.CategoryId, true)
 	}
 
 	var viewTopicList []*miikov1.Topic

@@ -40,6 +40,11 @@ export class Category extends Message<Category> {
    */
   problemSize = 0;
 
+  /**
+   * @generated from field: repeated miiko.v1.Topic topic_list = 7;
+   */
+  topicList: Topic[] = [];
+
   constructor(data?: PartialMessage<Category>) {
     super();
     proto3.util.initPartial(data, this);
@@ -54,6 +59,7 @@ export class Category extends Message<Category> {
     { no: 4, name: "category_order", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 5, name: "topic_size", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 6, name: "problem_size", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 7, name: "topic_list", kind: "message", T: Topic, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Category {
@@ -241,6 +247,43 @@ export class Tag extends Message<Tag> {
 /**
  * req/res
  *
+ * @generated from message miiko.v1.CategoryListGetRequest
+ */
+export class CategoryListGetRequest extends Message<CategoryListGetRequest> {
+  /**
+   * @generated from field: bool is_required_topic = 1;
+   */
+  isRequiredTopic = false;
+
+  constructor(data?: PartialMessage<CategoryListGetRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "miiko.v1.CategoryListGetRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "is_required_topic", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CategoryListGetRequest {
+    return new CategoryListGetRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CategoryListGetRequest {
+    return new CategoryListGetRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CategoryListGetRequest {
+    return new CategoryListGetRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: CategoryListGetRequest | PlainMessage<CategoryListGetRequest> | undefined, b: CategoryListGetRequest | PlainMessage<CategoryListGetRequest> | undefined): boolean {
+    return proto3.util.equals(CategoryListGetRequest, a, b);
+  }
+}
+
+/**
  * @generated from message miiko.v1.CategoryListGetResponse
  */
 export class CategoryListGetResponse extends Message<CategoryListGetResponse> {

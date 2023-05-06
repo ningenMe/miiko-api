@@ -76,7 +76,7 @@ func (CategoryRepository) Delete(categoryId string) {
 }
 
 func (CategoryRepository) UpdateTopicSizeAndProblemSize(categoryId string) {
-	topicList := topicRepository.GetListByCategoryId(categoryId)
+	topicList := topicRepository.GetListByCategoryId(categoryId, true)
 	topicSize := len(topicList)
 	problemSize := 0
 	for _, topic := range topicList {

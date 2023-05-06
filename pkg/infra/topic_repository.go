@@ -9,7 +9,7 @@ type TopicRepository struct{}
 
 var problemRepository = ProblemRepository{}
 
-func (TopicRepository) GetListByCategoryId(categoryId string) []*TopicDto {
+func (TopicRepository) GetListByCategoryId(categoryId string, isRequiredProblem bool) []*TopicDto {
 	var list []*TopicDto
 
 	rows, err := ComproMysql.NamedQuery(
@@ -28,7 +28,9 @@ func (TopicRepository) GetListByCategoryId(categoryId string) []*TopicDto {
 		if err = rows.StructScan(c); err != nil {
 			fmt.Println(err)
 		}
-		c.ProblemList = problemRepository.GetProblemListByTopicId(c.TopicId, false)
+		if isRequiredProblem {
+			c.ProblemList = problemRepository.GetProblemListByTopicId(c.TopicId, false)
+		}
 		list = append(list, c)
 	}
 
