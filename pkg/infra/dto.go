@@ -59,6 +59,10 @@ func GetNewProblemId() string {
 	return "problem_" + getRandomString(6)
 }
 
+func GetNewReferenceId() string {
+	return "reference_" + getRandomString(6)
+}
+
 // https://qiita.com/nakaryooo/items/7d269525a288c4b3ecda
 func getRandomString(digit uint32) string {
 

@@ -11,6 +11,7 @@ import (
 type TopicUsecase struct{}
 
 var categoryServie = domain.CategoryService{}
+var topicService = domain.TopicService{}
 
 func (TopicUsecase) TopicListGet(categorySystemName string) (*miikov1.TopicListGetResponse, error) {
 
@@ -78,12 +79,25 @@ func (TopicUsecase) TopicPost(header http.Header, topicId string, topic *miikov1
 		topicId = infra.GetNewTopicId()
 	}
 
-	topicRepository.Upsert(&infra.TopicDto{
+	var referenceDtoList []*infra.ReferenceDto
+	for _, reference := range topic.ReferenceList {
+		referenceDtoList = append(referenceDtoList, &infra.ReferenceDto{
+			ReferenceId:          infra.GetNewReferenceId(), //更新のたびにIDは作り直す
+			Url:                  reference.Url,
+			ReferenceDisplayName: reference.ReferenceDisplayName,
+		})
+	}
+
+	if err := topicService.Upsert(&infra.TopicDto{
 		TopicId:          topicId,
 		CategoryId:       categoryId,
 		TopicDisplayName: topic.TopicDisplayName,
 		TopicOrder:       topic.TopicOrder,
-	})
+		TopicText:        topic.TopicText,
+		ReferenceList:    referenceDtoList,
+	}); err != nil {
+		return nil, err
+	}
 
 	return &miikov1.TopicPostResponse{TopicId: topicId}, nil
 }
