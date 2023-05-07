@@ -312,6 +312,14 @@ func (s *MiikoController) ProblemPost(
 		Estimation:         req.Msg.GetProblem().GetEstimation(),
 		TagList:            tagList,
 	}
+
+	//NOTE タグがない場合は未登録タグに入れる
+	if len(problem.TagList) == 0 {
+		problem.TagList = append(problem.TagList, &infra.TagDto{
+			TopicId: "topic_000266",
+		})
+	}
+
 	problemRepository.Upsert(problem)
 	problemRepository.DeleteTag(problemId)
 	for _, tag := range problem.TagList {

@@ -156,7 +156,7 @@ func (ProblemRepository) DeleteTag(problemId string) {
 }
 
 func (ProblemRepository) InsertTag(problemId string, topicId string) {
-	_, err := ComproMysql.NamedExec(`INSERT INTO relation_topic_problem (problem_id, topic_id) VALUES (:problem_id, :topic_id) `,
+	_, err := ComproMysql.NamedExec(`INSERT INTO relation_topic_problem (problem_id, topic_id) VALUES (:problemId, :topicId) `,
 		map[string]interface{}{
 			"problemId": problemId,
 			"topicId":   topicId,
