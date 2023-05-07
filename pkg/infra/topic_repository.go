@@ -42,7 +42,7 @@ func (TopicRepository) Get(topicId string) (*TopicDto, error) {
 	var dto *TopicDto
 
 	rows, err := ComproMysql.NamedQuery(
-		`SELECT topic_id, category_id, topic_display_name, topic_order FROM topic WHERE topic_id = :topicId`,
+		`SELECT topic_id, category_id, topic_display_name, topic_order, topic_text FROM topic WHERE topic_id = :topicId`,
 		map[string]interface{}{
 			"topicId": topicId,
 		})
