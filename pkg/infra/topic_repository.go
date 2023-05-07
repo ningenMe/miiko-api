@@ -9,6 +9,7 @@ type TopicRepository struct{}
 
 var problemRepository = ProblemRepository{}
 
+// TODO メソッドを分解する
 func (TopicRepository) GetListByCategoryId(categoryId string, isRequiredProblem bool) []*TopicDto {
 	var list []*TopicDto
 

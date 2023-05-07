@@ -2,7 +2,9 @@ package application
 
 import (
 	"fmt"
+	"github.com/ningenMe/miiko-api/pkg/infra"
 	miikov1 "github.com/ningenMe/miiko-api/proto/gen_go/v1"
+	"net/http"
 )
 
 type TopicUsecase struct{}
@@ -60,4 +62,25 @@ func (TopicUsecase) TopicListGet(categorySystemName string) (*miikov1.TopicListG
 		Category:  categoryView,
 		TopicList: topicViewList,
 	}, nil
+}
+
+func (TopicUsecase) TopicPost(header http.Header, topicId string, topic *miikov1.Topic, categoryId string) (*miikov1.TopicPostResponse, error) {
+
+	if err := authorizationService.CheckLoggedIn(header); err != nil {
+		return &miikov1.TopicPostResponse{}, err
+	}
+
+	//idがないときは新規作成
+	if topicId == "" {
+		topicId = infra.GetNewTopicId()
+	}
+
+	topicRepository.Upsert(&infra.TopicDto{
+		TopicId:          topicId,
+		CategoryId:       categoryId,
+		TopicDisplayName: topic.TopicDisplayName,
+		TopicOrder:       topic.TopicOrder,
+	})
+
+	return &miikov1.TopicPostResponse{TopicId: topicId}, nil
 }

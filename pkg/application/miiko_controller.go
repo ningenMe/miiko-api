@@ -56,31 +56,10 @@ func (s *MiikoController) TopicPost(
 	ctx context.Context,
 	req *connect.Request[miikov1.TopicPostRequest],
 ) (*connect.Response[miikov1.TopicPostResponse], error) {
-	if err := authorizationService.CheckLoggedIn(req.Header()); err != nil {
-		return connect.NewResponse[miikov1.TopicPostResponse](
-			&miikov1.TopicPostResponse{},
-		), err
-	}
 
-	topicId := req.Msg.TopicId
-	//更新
-	if topicId == "" {
-		topicId = infra.GetNewTopicId()
-	}
+	body, err := topicUsecase.TopicPost(req.Header(), req.Msg.TopicId, req.Msg.GetTopic(), req.Msg.CategoryId)
 
-	topicRepository.Upsert(
-		&infra.TopicDto{
-			TopicId:          topicId,
-			CategoryId:       req.Msg.CategoryId,
-			TopicDisplayName: req.Msg.GetTopic().GetTopicDisplayName(),
-			TopicOrder:       req.Msg.GetTopic().GetTopicOrder(),
-		})
-
-	return connect.NewResponse[miikov1.TopicPostResponse](
-		&miikov1.TopicPostResponse{
-			TopicId: topicId,
-		},
-	), nil
+	return connect.NewResponse[miikov1.TopicPostResponse](body), err
 }
 
 func (s *MiikoController) ProblemListGet(

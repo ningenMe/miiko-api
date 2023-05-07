@@ -69,6 +69,7 @@ func (CategoryUsecase) CategoryPost(header http.Header, categoryId string, categ
 
 	} else {
 		//削除
+		//TODO 削除は別エンドポイントにしてこのロジックはどこかでなくす
 		categoryRepository.Delete(categoryId)
 	}
 
