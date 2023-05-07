@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 	"github.com/bufbuild/connect-go"
+	"github.com/ningenMe/miiko-api/pkg/domain"
 	"github.com/ningenMe/miiko-api/pkg/infra"
 	miikov1 "github.com/ningenMe/miiko-api/proto/gen_go/v1"
-	"net/http"
 )
 
 type MiikoController struct{}
@@ -17,6 +17,7 @@ var problemRepository = infra.ProblemRepository{}
 var kiwaApiRepository = infra.KiwaApiRepository{}
 
 var categoryUsecase = CategoryUsecase{}
+var authorizationService = domain.AuthorizationService{}
 
 func (s *MiikoController) CategoryListGet(
 	ctx context.Context,
@@ -24,7 +25,7 @@ func (s *MiikoController) CategoryListGet(
 ) (*connect.Response[miikov1.CategoryListGetResponse], error) {
 
 	body, err := categoryUsecase.CategoryListGet(req.Msg.IsRequiredTopic)
-	
+
 	return connect.NewResponse[miikov1.CategoryListGetResponse](body), err
 }
 
@@ -32,16 +33,8 @@ func (s *MiikoController) CategoryPost(
 	ctx context.Context,
 	req *connect.Request[miikov1.CategoryPostRequest],
 ) (*connect.Response[miikov1.CategoryPostResponse], error) {
-	httpreq := http.Request{Header: req.Header()}
-	cookie, err := httpreq.Cookie(infra.CookieName)
 
-	if err != nil {
-		return connect.NewResponse[miikov1.CategoryPostResponse](
-			&miikov1.CategoryPostResponse{},
-		), err
-	}
-
-	if err = kiwaApiRepository.IsLoggedIn(cookie); err != nil {
+	if err := authorizationService.CheckLoggedIn(req.Header()); err != nil {
 		return connect.NewResponse[miikov1.CategoryPostResponse](
 			&miikov1.CategoryPostResponse{},
 		), err
@@ -134,16 +127,7 @@ func (s *MiikoController) TopicPost(
 	ctx context.Context,
 	req *connect.Request[miikov1.TopicPostRequest],
 ) (*connect.Response[miikov1.TopicPostResponse], error) {
-	httpreq := http.Request{Header: req.Header()}
-	cookie, err := httpreq.Cookie(infra.CookieName)
-
-	if err != nil {
-		return connect.NewResponse[miikov1.TopicPostResponse](
-			&miikov1.TopicPostResponse{},
-		), err
-	}
-
-	if err = kiwaApiRepository.IsLoggedIn(cookie); err != nil {
+	if err := authorizationService.CheckLoggedIn(req.Header()); err != nil {
 		return connect.NewResponse[miikov1.TopicPostResponse](
 			&miikov1.TopicPostResponse{},
 		), err
@@ -238,16 +222,7 @@ func (s *MiikoController) ProblemPost(
 	ctx context.Context,
 	req *connect.Request[miikov1.ProblemPostRequest],
 ) (*connect.Response[miikov1.ProblemPostResponse], error) {
-	httpreq := http.Request{Header: req.Header()}
-	cookie, err := httpreq.Cookie(infra.CookieName)
-
-	if err != nil {
-		return connect.NewResponse[miikov1.ProblemPostResponse](
-			&miikov1.ProblemPostResponse{},
-		), err
-	}
-
-	if err = kiwaApiRepository.IsLoggedIn(cookie); err != nil {
+	if err := authorizationService.CheckLoggedIn(req.Header()); err != nil {
 		return connect.NewResponse[miikov1.ProblemPostResponse](
 			&miikov1.ProblemPostResponse{},
 		), err

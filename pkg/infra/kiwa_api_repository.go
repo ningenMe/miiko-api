@@ -11,42 +11,38 @@ const CookieName = "NINGENME_NET_SESSION"
 
 type KiwaApiRepository struct{}
 
-type UsersMeGetResponse struct {
-	UserId    string                      `json:"userId"`
-	Authority UsersMeGetResponseAuthority `json:"authority"`
+type UsersMeGetResponseDto struct {
+	UserId    string                         `json:"userId"`
+	Authority UsersMeGetResponseAuthorityDto `json:"authority"`
 }
-type UsersMeGetResponseAuthority struct {
+type UsersMeGetResponseAuthorityDto struct {
 	ComproCategory bool `json:"comproCategory"`
 }
 
-func (KiwaApiRepository) IsLoggedIn(cookie *http.Cookie) error {
+func (KiwaApiRepository) GetUsersMe(cookie *http.Cookie) (*UsersMeGetResponseDto, error) {
 	req, _ := http.NewRequest("GET", "https://kiwa-api.ningenme.net/users/me", nil)
 	req.AddCookie(cookie)
 
 	client := &http.Client{Transport: http.DefaultTransport}
 	res, err := client.Do(req)
 	if err != nil {
-		return err
+		return &UsersMeGetResponseDto{}, err
 	}
 
 	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
-		return fmt.Errorf("kiwa-api response status was not 200")
+		return &UsersMeGetResponseDto{}, fmt.Errorf("kiwa-api response status was not 200")
 	}
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		return err
+		return &UsersMeGetResponseDto{}, err
 	}
-	var usersMeGetResponse UsersMeGetResponse
+	var usersMeGetResponse *UsersMeGetResponseDto
 	if err := json.Unmarshal(body, &usersMeGetResponse); err != nil {
-		return err
+		return &UsersMeGetResponseDto{}, err
 	}
-
-	if !usersMeGetResponse.Authority.ComproCategory {
-		return fmt.Errorf("not authorized")
-	}
-
-	return nil
+	
+	return usersMeGetResponse, nil
 }
