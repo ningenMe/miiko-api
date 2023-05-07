@@ -37,6 +37,32 @@ func (TopicRepository) GetListByCategoryId(categoryId string, isRequiredProblem 
 	return list
 }
 
+func (TopicRepository) Get(topicId string) *TopicDto {
+	var dto *TopicDto
+
+	rows, err := ComproMysql.NamedQuery(
+		`SELECT topic_id, category_id, topic_display_name, topic_order FROM topic WHERE topic_id = :topicId`,
+		map[string]interface{}{
+			"topicId": topicId,
+		})
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		c := &TopicDto{}
+		if err = rows.StructScan(c); err != nil {
+			fmt.Println(err)
+		}
+		c.ProblemList = problemRepository.GetProblemListByTopicId(c.TopicId, false)
+		dto = c
+	}
+
+	return dto
+}
+
 func (TopicRepository) Upsert(topic *TopicDto) {
 
 	_, err := ComproMysql.NamedExec(`INSERT INTO topic (topic_id, category_id, topic_display_name, topic_order) 

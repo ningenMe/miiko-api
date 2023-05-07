@@ -832,3 +832,77 @@ export class ProblemPostResponse extends Message<ProblemPostResponse> {
   }
 }
 
+/**
+ * @generated from message miiko.v1.TopicGetRequest
+ */
+export class TopicGetRequest extends Message<TopicGetRequest> {
+  /**
+   * @generated from field: string topic_id = 1;
+   */
+  topicId = "";
+
+  constructor(data?: PartialMessage<TopicGetRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "miiko.v1.TopicGetRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "topic_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TopicGetRequest {
+    return new TopicGetRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TopicGetRequest {
+    return new TopicGetRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TopicGetRequest {
+    return new TopicGetRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: TopicGetRequest | PlainMessage<TopicGetRequest> | undefined, b: TopicGetRequest | PlainMessage<TopicGetRequest> | undefined): boolean {
+    return proto3.util.equals(TopicGetRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message miiko.v1.TopicGetResponse
+ */
+export class TopicGetResponse extends Message<TopicGetResponse> {
+  /**
+   * @generated from field: miiko.v1.Topic topic = 1;
+   */
+  topic?: Topic;
+
+  constructor(data?: PartialMessage<TopicGetResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "miiko.v1.TopicGetResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "topic", kind: "message", T: Topic },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TopicGetResponse {
+    return new TopicGetResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TopicGetResponse {
+    return new TopicGetResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TopicGetResponse {
+    return new TopicGetResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: TopicGetResponse | PlainMessage<TopicGetResponse> | undefined, b: TopicGetResponse | PlainMessage<TopicGetResponse> | undefined): boolean {
+    return proto3.util.equals(TopicGetResponse, a, b);
+  }
+}
+

@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CategoryListGetRequest, CategoryListGetResponse, CategoryPostRequest, CategoryPostResponse, ProblemGetRequest, ProblemGetResponse, ProblemListGetRequest, ProblemListGetResponse, ProblemPostRequest, ProblemPostResponse, TopicListGetRequest, TopicListGetResponse, TopicPostRequest, TopicPostResponse } from "./miiko_pb.ts";
+import { CategoryListGetRequest, CategoryListGetResponse, CategoryPostRequest, CategoryPostResponse, ProblemGetRequest, ProblemGetResponse, ProblemListGetRequest, ProblemListGetResponse, ProblemPostRequest, ProblemPostResponse, TopicGetRequest, TopicGetResponse, TopicListGetRequest, TopicListGetResponse, TopicPostRequest, TopicPostResponse } from "./miiko_pb.ts";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -37,6 +37,15 @@ export const MiikoService = {
       name: "TopicListGet",
       I: TopicListGetRequest,
       O: TopicListGetResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc miiko.v1.MiikoService.TopicGet
+     */
+    topicGet: {
+      name: "TopicGet",
+      I: TopicGetRequest,
+      O: TopicGetResponse,
       kind: MethodKind.Unary,
     },
     /**

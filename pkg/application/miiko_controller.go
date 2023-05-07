@@ -327,3 +327,42 @@ func (s *MiikoController) ProblemPost(
 		},
 	), nil
 }
+
+func (s *MiikoController) TopicGet(
+	ctx context.Context,
+	req *connect.Request[miikov1.TopicGetRequest],
+) (*connect.Response[miikov1.TopicGetResponse], error) {
+
+	topic := topicRepository.Get(req.Msg.TopicId)
+
+	var viewProblemList []*miikov1.Problem
+	for _, problem := range topic.ProblemList {
+
+		var viewTagList []*miikov1.Tag
+		for _, tag := range problem.TagList {
+			viewTagList = append(viewTagList, &miikov1.Tag{
+				TopicId:          tag.TopicId,
+				CategoryId:       tag.CategoryId,
+				TopicDisplayName: tag.TopicDisplayName,
+			})
+		}
+
+		viewProblemList = append(viewProblemList, &miikov1.Problem{
+			ProblemId:          problem.ProblemId,
+			Url:                problem.Url,
+			ProblemDisplayName: problem.ProblemDisplayName,
+			Estimation:         problem.Estimation,
+			TagList:            viewTagList,
+		})
+	}
+
+	return connect.NewResponse[miikov1.TopicGetResponse](
+		&miikov1.TopicGetResponse{
+			Topic: &miikov1.Topic{
+				TopicId:          topic.TopicId,
+				TopicDisplayName: topic.TopicDisplayName,
+				TopicOrder:       topic.TopicOrder,
+				ProblemList:      viewProblemList,
+			},
+		}), nil
+}
