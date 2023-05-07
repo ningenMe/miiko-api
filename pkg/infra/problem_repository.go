@@ -8,6 +8,7 @@ import (
 
 type ProblemRepository struct{}
 
+// TODO ハンドリングを直す
 func (ProblemRepository) GetProblemListByTopicId(topicId string, isRequiredTag bool) []*ProblemDto {
 	var list []*ProblemDto
 

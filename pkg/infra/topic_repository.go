@@ -38,8 +38,7 @@ func (TopicRepository) GetListByCategoryId(categoryId string, isRequiredProblem 
 	return list
 }
 
-// TODO TopicProblemWithTagの取得
-func (TopicRepository) Get(topicId string) *TopicDto {
+func (TopicRepository) Get(topicId string) (*TopicDto, error) {
 	var dto *TopicDto
 
 	rows, err := ComproMysql.NamedQuery(
@@ -49,7 +48,7 @@ func (TopicRepository) Get(topicId string) *TopicDto {
 		})
 	if err != nil {
 		fmt.Println(err)
-		return nil
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -58,11 +57,10 @@ func (TopicRepository) Get(topicId string) *TopicDto {
 		if err = rows.StructScan(c); err != nil {
 			fmt.Println(err)
 		}
-		c.ProblemList = problemRepository.GetProblemListByTopicId(c.TopicId, true)
 		dto = c
 	}
 
-	return dto
+	return dto, nil
 }
 
 func (TopicRepository) Upsert(topicDto *TopicDto) error {

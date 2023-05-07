@@ -105,8 +105,8 @@ func (TopicUsecase) TopicPost(header http.Header, topicId string, topic *miikov1
 func (TopicUsecase) TopicGet(topicId string) (*miikov1.TopicGetResponse, error) {
 
 	//データ取得
-	topicDto := topicRepository.Get(topicId)
-	if topicDto == nil {
+	topicDto, err := topicService.GetWithProblemWithTag(topicId)
+	if err != nil {
 		return &miikov1.TopicGetResponse{}, fmt.Errorf("topic not found")
 	}
 	categoryDto, err := categoryServie.GetCategoryByCategoryId(topicDto.CategoryId)
@@ -135,6 +135,14 @@ func (TopicUsecase) TopicGet(topicId string) (*miikov1.TopicGetResponse, error) 
 			TagList:            tagViewList,
 		})
 	}
+	var referenceViewList []*miikov1.Reference
+	for _, referenceDto := range topicDto.ReferenceList {
+		referenceViewList = append(referenceViewList, &miikov1.Reference{
+			ReferenceId:          referenceDto.ReferenceId,
+			Url:                  referenceDto.Url,
+			ReferenceDisplayName: referenceDto.ReferenceDisplayName,
+		})
+	}
 
 	return &miikov1.TopicGetResponse{
 		Category: &miikov1.Category{
@@ -149,6 +157,7 @@ func (TopicUsecase) TopicGet(topicId string) (*miikov1.TopicGetResponse, error) 
 			TopicId:          topicDto.TopicId,
 			TopicDisplayName: topicDto.TopicDisplayName,
 			TopicOrder:       topicDto.TopicOrder,
+			TopicText:        topicDto.TopicText,
 			ProblemList:      problemViewList,
 		},
 	}, nil

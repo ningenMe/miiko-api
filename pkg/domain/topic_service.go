@@ -23,3 +23,16 @@ func (TopicService) Upsert(topicDto *infra.TopicDto) error {
 	}
 	return nil
 }
+
+func (TopicService) GetWithProblemWithTag(topicId string) (*infra.TopicDto, error) {
+	topicDto, err := topicRepository.Get(topicId)
+	if err != nil {
+		return nil, err
+	}
+	//TODO ハンドリングを直す
+	topicDto.ProblemList = problemRepository.GetProblemListByTopicId(topicId, true)
+	//TODO エラー拾うと空の時おかしくなる気がする、後で修正
+	topicDto.ReferenceList, _ = referenceRepository.Get(topicId)
+
+	return topicDto, nil
+}
