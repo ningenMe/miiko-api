@@ -37,3 +37,30 @@ func (ProblemUsecase) ProblemListGet(offset int32, limit int32) (*miikov1.Proble
 		ProblemList: problemViewList,
 	}, nil
 }
+
+func (ProblemUsecase) ProblemGet(problemId string) (*miikov1.ProblemGetResponse, error) {
+
+	problemDto, err := problemRepository.GetProblemWithTag(problemId)
+	if err != nil {
+		return &miikov1.ProblemGetResponse{}, err
+	}
+
+	var tagViewList []*miikov1.Tag
+	for _, tagDto := range problemDto.TagList {
+		tagViewList = append(tagViewList, &miikov1.Tag{
+			TopicId:          tagDto.TopicId,
+			CategoryId:       tagDto.CategoryId,
+			TopicDisplayName: tagDto.TopicDisplayName,
+		})
+	}
+
+	return &miikov1.ProblemGetResponse{
+		Problem: &miikov1.Problem{
+			ProblemId:          problemDto.ProblemId,
+			Url:                problemDto.Url,
+			ProblemDisplayName: problemDto.ProblemDisplayName,
+			Estimation:         problemDto.Estimation,
+			TagList:            tagViewList,
+		},
+	}, nil
+}

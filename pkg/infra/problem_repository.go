@@ -77,7 +77,8 @@ func (ProblemRepository) GetProblemList(offset int32, limit int32) []*ProblemDto
 	return list
 }
 
-func (ProblemRepository) GetProblem(problemId string) *ProblemDto {
+// TODO ProblemWithTag
+func (ProblemRepository) GetProblemWithTag(problemId string) (*ProblemDto, error) {
 	var dto *ProblemDto
 
 	rows, err := ComproMysql.NamedQuery(
@@ -87,7 +88,7 @@ func (ProblemRepository) GetProblem(problemId string) *ProblemDto {
 		})
 	if err != nil {
 		fmt.Println(err)
-		return nil
+		return nil, err
 	}
 
 	for rows.Next() {
@@ -101,7 +102,7 @@ func (ProblemRepository) GetProblem(problemId string) *ProblemDto {
 	tagMap := getTagMap([]string{dto.ProblemId})
 	dto.TagList = tagMap[dto.ProblemId]
 
-	return dto
+	return dto, nil
 }
 
 func (ProblemRepository) GetProblemByUrl(url string) *ProblemDto {

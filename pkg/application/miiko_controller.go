@@ -87,27 +87,9 @@ func (s *MiikoController) ProblemGet(
 	req *connect.Request[miikov1.ProblemGetRequest],
 ) (*connect.Response[miikov1.ProblemGetResponse], error) {
 
-	problem := problemRepository.GetProblem(req.Msg.ProblemId)
+	body, err := problemUsecase.ProblemGet(req.Msg.ProblemId)
 
-	var viewTagList []*miikov1.Tag
-	for _, tag := range problem.TagList {
-		viewTagList = append(viewTagList, &miikov1.Tag{
-			TopicId:          tag.TopicId,
-			CategoryId:       tag.CategoryId,
-			TopicDisplayName: tag.TopicDisplayName,
-		})
-	}
-
-	return connect.NewResponse[miikov1.ProblemGetResponse](
-		&miikov1.ProblemGetResponse{
-			Problem: &miikov1.Problem{
-				ProblemId:          problem.ProblemId,
-				Url:                problem.Url,
-				ProblemDisplayName: problem.ProblemDisplayName,
-				Estimation:         problem.Estimation,
-				TagList:            viewTagList,
-			},
-		}), nil
+	return connect.NewResponse[miikov1.ProblemGetResponse](body), err
 }
 
 func (s *MiikoController) ProblemPost(
