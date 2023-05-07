@@ -14,10 +14,10 @@ type MiikoController struct{}
 var categoryRepository = infra.CategoryRepository{}
 var topicRepository = infra.TopicRepository{}
 var problemRepository = infra.ProblemRepository{}
-var kiwaApiRepository = infra.KiwaApiRepository{}
 
 var categoryUsecase = CategoryUsecase{}
 var topicUsecase = TopicUsecase{}
+var problemUsecase = ProblemUsecase{}
 var authorizationService = domain.AuthorizationService{}
 
 func (s *MiikoController) CategoryListGet(
@@ -76,36 +76,10 @@ func (s *MiikoController) ProblemListGet(
 	ctx context.Context,
 	req *connect.Request[miikov1.ProblemListGetRequest],
 ) (*connect.Response[miikov1.ProblemListGetResponse], error) {
-	list := problemRepository.GetProblemList(
-		req.Msg.Offset,
-		req.Msg.Limit,
-	)
 
-	var viewProblemList []*miikov1.Problem
-	for _, problem := range list {
+	body, err := problemUsecase.ProblemListGet(req.Msg.Offset, req.Msg.Limit)
 
-		var viewTagList []*miikov1.Tag
-		for _, tag := range problem.TagList {
-			viewTagList = append(viewTagList, &miikov1.Tag{
-				TopicId:          tag.TopicId,
-				CategoryId:       tag.CategoryId,
-				TopicDisplayName: tag.TopicDisplayName,
-			})
-		}
-
-		viewProblemList = append(viewProblemList, &miikov1.Problem{
-			ProblemId:          problem.ProblemId,
-			Url:                problem.Url,
-			ProblemDisplayName: problem.ProblemDisplayName,
-			Estimation:         problem.Estimation,
-			TagList:            viewTagList,
-		})
-	}
-
-	return connect.NewResponse[miikov1.ProblemListGetResponse](
-		&miikov1.ProblemListGetResponse{
-			ProblemList: viewProblemList,
-		}), nil
+	return connect.NewResponse[miikov1.ProblemListGetResponse](body), err
 }
 
 func (s *MiikoController) ProblemGet(
