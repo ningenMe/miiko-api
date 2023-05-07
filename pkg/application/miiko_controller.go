@@ -2,6 +2,7 @@ package application
 
 import (
 	"context"
+	"fmt"
 	"github.com/bufbuild/connect-go"
 	"github.com/ningenMe/miiko-api/pkg/infra"
 	miikov1 "github.com/ningenMe/miiko-api/proto/gen_go/v1"
@@ -293,9 +294,16 @@ func (s *MiikoController) ProblemPost(
 	}
 
 	problemId := req.Msg.ProblemId
-	//更新
+	//新規でidを払い出す
 	if problemId == "" {
 		problemId = infra.GetNewProblemId()
+		//urlが同じなのに新規作成してたらおかしいのでエラーにする
+		problemWithUrl := problemRepository.GetProblemByUrl(req.Msg.GetProblem().GetUrl())
+		if problemWithUrl != nil {
+			return connect.NewResponse[miikov1.ProblemPostResponse](
+				&miikov1.ProblemPostResponse{},
+			), fmt.Errorf("url is duplicated")
+		}
 	}
 
 	var tagList []*infra.TagDto

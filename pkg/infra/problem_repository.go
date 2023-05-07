@@ -105,6 +105,30 @@ func (ProblemRepository) GetProblem(problemId string) *ProblemDto {
 	return dto
 }
 
+func (ProblemRepository) GetProblemByUrl(url string) *ProblemDto {
+	var dto *ProblemDto
+
+	rows, err := ComproMysql.NamedQuery(
+		`SELECT problem_id, url, problem_display_name, estimation FROM problem WHERE url = :url`,
+		map[string]interface{}{
+			"url": url,
+		})
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+
+	for rows.Next() {
+		c := &ProblemDto{}
+		if err = rows.StructScan(c); err != nil {
+			fmt.Println(err)
+		}
+		dto = c
+	}
+
+	return dto
+}
+
 func getTagMap(problemIdList []string) map[string][]*TagDto {
 	mp := make(map[string][]*TagDto)
 
