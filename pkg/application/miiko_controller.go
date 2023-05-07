@@ -62,6 +62,16 @@ func (s *MiikoController) TopicPost(
 	return connect.NewResponse[miikov1.TopicPostResponse](body), err
 }
 
+func (s *MiikoController) TopicGet(
+	ctx context.Context,
+	req *connect.Request[miikov1.TopicGetRequest],
+) (*connect.Response[miikov1.TopicGetResponse], error) {
+
+	body, err := topicUsecase.TopicGet(req.Msg.TopicId)
+
+	return connect.NewResponse[miikov1.TopicGetResponse](body), err
+}
+
 func (s *MiikoController) ProblemListGet(
 	ctx context.Context,
 	req *connect.Request[miikov1.ProblemListGetRequest],
@@ -182,58 +192,4 @@ func (s *MiikoController) ProblemPost(
 			ProblemId: problemId,
 		},
 	), nil
-}
-
-func (s *MiikoController) TopicGet(
-	ctx context.Context,
-	req *connect.Request[miikov1.TopicGetRequest],
-) (*connect.Response[miikov1.TopicGetResponse], error) {
-
-	topic := topicRepository.Get(req.Msg.TopicId)
-
-	var viewProblemList []*miikov1.Problem
-	for _, problem := range topic.ProblemList {
-
-		var viewTagList []*miikov1.Tag
-		for _, tag := range problem.TagList {
-			viewTagList = append(viewTagList, &miikov1.Tag{
-				TopicId:          tag.TopicId,
-				CategoryId:       tag.CategoryId,
-				TopicDisplayName: tag.TopicDisplayName,
-			})
-		}
-
-		viewProblemList = append(viewProblemList, &miikov1.Problem{
-			ProblemId:          problem.ProblemId,
-			Url:                problem.Url,
-			ProblemDisplayName: problem.ProblemDisplayName,
-			Estimation:         problem.Estimation,
-			TagList:            viewTagList,
-		})
-	}
-	categoryList := categoryRepository.GetList()
-	var viewCategory *miikov1.Category
-	for _, category := range categoryList {
-		if category.CategoryId == topic.CategoryId {
-			viewCategory = &miikov1.Category{
-				CategoryId:          category.CategoryId,
-				CategorySystemName:  category.CategorySystemName,
-				CategoryDisplayName: category.CategoryDisplayName,
-				CategoryOrder:       category.CategoryOrder,
-				TopicSize:           category.TopicSize,
-				ProblemSize:         category.ProblemSize,
-			}
-		}
-	}
-
-	return connect.NewResponse[miikov1.TopicGetResponse](
-		&miikov1.TopicGetResponse{
-			Category: viewCategory,
-			Topic: &miikov1.Topic{
-				TopicId:          topic.TopicId,
-				TopicDisplayName: topic.TopicDisplayName,
-				TopicOrder:       topic.TopicOrder,
-				ProblemList:      viewProblemList,
-			},
-		}), nil
 }

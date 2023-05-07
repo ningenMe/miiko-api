@@ -38,6 +38,7 @@ func (TopicRepository) GetListByCategoryId(categoryId string, isRequiredProblem 
 	return list
 }
 
+// TODO TopicProblemWithTagの取得
 func (TopicRepository) Get(topicId string) *TopicDto {
 	var dto *TopicDto
 

@@ -2,12 +2,15 @@ package application
 
 import (
 	"fmt"
+	"github.com/ningenMe/miiko-api/pkg/domain"
 	"github.com/ningenMe/miiko-api/pkg/infra"
 	miikov1 "github.com/ningenMe/miiko-api/proto/gen_go/v1"
 	"net/http"
 )
 
 type TopicUsecase struct{}
+
+var categoryServie = domain.CategoryService{}
 
 func (TopicUsecase) TopicListGet(categorySystemName string) (*miikov1.TopicListGetResponse, error) {
 
@@ -83,4 +86,56 @@ func (TopicUsecase) TopicPost(header http.Header, topicId string, topic *miikov1
 	})
 
 	return &miikov1.TopicPostResponse{TopicId: topicId}, nil
+}
+
+func (TopicUsecase) TopicGet(topicId string) (*miikov1.TopicGetResponse, error) {
+
+	//データ取得
+	topicDto := topicRepository.Get(topicId)
+	if topicDto == nil {
+		return &miikov1.TopicGetResponse{}, fmt.Errorf("topic not found")
+	}
+	categoryDto, err := categoryServie.GetCategoryByCategoryId(topicDto.CategoryId)
+	if err != nil {
+		return &miikov1.TopicGetResponse{}, err
+	}
+
+	//データ整形
+	var problemViewList []*miikov1.Problem
+	for _, problemDto := range topicDto.ProblemList {
+
+		var tagViewList []*miikov1.Tag
+		for _, tag := range problemDto.TagList {
+			tagViewList = append(tagViewList, &miikov1.Tag{
+				TopicId:          tag.TopicId,
+				CategoryId:       tag.CategoryId,
+				TopicDisplayName: tag.TopicDisplayName,
+			})
+		}
+
+		problemViewList = append(problemViewList, &miikov1.Problem{
+			ProblemId:          problemDto.ProblemId,
+			Url:                problemDto.Url,
+			ProblemDisplayName: problemDto.ProblemDisplayName,
+			Estimation:         problemDto.Estimation,
+			TagList:            tagViewList,
+		})
+	}
+
+	return &miikov1.TopicGetResponse{
+		Category: &miikov1.Category{
+			CategoryId:          categoryDto.CategoryId,
+			CategorySystemName:  categoryDto.CategorySystemName,
+			CategoryDisplayName: categoryDto.CategoryDisplayName,
+			CategoryOrder:       categoryDto.CategoryOrder,
+			TopicSize:           categoryDto.TopicSize,
+			ProblemSize:         categoryDto.ProblemSize,
+		},
+		Topic: &miikov1.Topic{
+			TopicId:          topicDto.TopicId,
+			TopicDisplayName: topicDto.TopicDisplayName,
+			TopicOrder:       topicDto.TopicOrder,
+			ProblemList:      problemViewList,
+		},
+	}, nil
 }
