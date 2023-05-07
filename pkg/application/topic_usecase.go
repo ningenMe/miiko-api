@@ -105,11 +105,11 @@ func (TopicUsecase) TopicGet(topicId string) (*miikov1.TopicGetResponse, error) 
 	for _, problemDto := range topicDto.ProblemList {
 
 		var tagViewList []*miikov1.Tag
-		for _, tag := range problemDto.TagList {
+		for _, tagDto := range problemDto.TagList {
 			tagViewList = append(tagViewList, &miikov1.Tag{
-				TopicId:          tag.TopicId,
-				CategoryId:       tag.CategoryId,
-				TopicDisplayName: tag.TopicDisplayName,
+				TopicId:          tagDto.TopicId,
+				CategoryId:       tagDto.CategoryId,
+				TopicDisplayName: tagDto.TopicDisplayName,
 			})
 		}
 
