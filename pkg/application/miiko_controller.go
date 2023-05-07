@@ -34,35 +34,11 @@ func (s *MiikoController) CategoryPost(
 	req *connect.Request[miikov1.CategoryPostRequest],
 ) (*connect.Response[miikov1.CategoryPostResponse], error) {
 
-	if err := authorizationService.CheckLoggedIn(req.Header()); err != nil {
-		return connect.NewResponse[miikov1.CategoryPostResponse](
-			&miikov1.CategoryPostResponse{},
-		), err
-	}
-
-	categoryId := req.Msg.CategoryId
-	if req.Msg.GetCategory() != nil {
-		categoryId = req.Msg.GetCategoryId()
-		if categoryId == "" {
-			categoryId = infra.GetNewCategoryId()
-		}
-		categoryRepository.Upsert(
-			&infra.CategoryDto{
-				CategoryId:          categoryId,
-				CategoryDisplayName: req.Msg.GetCategory().GetCategoryDisplayName(),
-				CategorySystemName:  req.Msg.GetCategory().GetCategorySystemName(),
-				CategoryOrder:       req.Msg.GetCategory().GetCategoryOrder(),
-			})
-		categoryRepository.UpdateTopicSizeAndProblemSize(categoryId)
-	} else {
-		categoryRepository.Delete(categoryId)
-	}
+	body, err := categoryUsecase.CategoryPost(req.Header(), req.Msg.CategoryId, req.Msg.GetCategory())
 
 	return connect.NewResponse[miikov1.CategoryPostResponse](
-		&miikov1.CategoryPostResponse{
-			CategoryId: categoryId,
-		},
-	), nil
+		body,
+	), err
 }
 
 func (s *MiikoController) TopicListGet(
