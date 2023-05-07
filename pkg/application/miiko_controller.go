@@ -201,20 +201,7 @@ func (s *MiikoController) ProblemListGet(
 	ctx context.Context,
 	req *connect.Request[miikov1.ProblemListGetRequest],
 ) (*connect.Response[miikov1.ProblemListGetResponse], error) {
-
-	var sortType string
-	switch req.Msg.SortType.String() {
-	case "SORT_TYPE_CREATED_TIME":
-		sortType = "created_time"
-	case "SORT_TYPE_ESTIMATION":
-		sortType = "estimation"
-	default:
-		return connect.NewResponse[miikov1.ProblemListGetResponse](
-			&miikov1.ProblemListGetResponse{}), nil
-	}
-
 	list := problemRepository.GetProblemList(
-		sortType,
 		req.Msg.Offset,
 		req.Msg.Limit,
 	)

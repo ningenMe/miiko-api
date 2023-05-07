@@ -43,15 +43,14 @@ func (ProblemRepository) GetProblemListByTopicId(topicId string, isRequiredTag b
 	return list
 }
 
-func (ProblemRepository) GetProblemList(sortType string, offset int32, limit int32) []*ProblemDto {
+func (ProblemRepository) GetProblemList(offset int32, limit int32) []*ProblemDto {
 	var list []*ProblemDto
 
 	rows, err := ComproMysql.NamedQuery(
-		`SELECT problem_id, url, problem_display_name, estimation FROM problem ORDER BY :sortType DESC LIMIT :limit OFFSET :offset`,
+		`SELECT problem_id, url, problem_display_name, estimation FROM problem ORDER BY created_time DESC LIMIT :limit OFFSET :offset`,
 		map[string]interface{}{
-			"sortType": sortType,
-			"offset":   offset,
-			"limit":    limit,
+			"offset": offset,
+			"limit":  limit,
 		})
 	if err != nil {
 		fmt.Println(err)
