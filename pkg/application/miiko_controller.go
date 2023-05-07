@@ -272,3 +272,55 @@ func (s *MiikoController) ProblemGet(
 			},
 		}), nil
 }
+
+func (s *MiikoController) ProblemPost(
+	ctx context.Context,
+	req *connect.Request[miikov1.ProblemPostRequest],
+) (*connect.Response[miikov1.ProblemPostResponse], error) {
+	httpreq := http.Request{Header: req.Header()}
+	cookie, err := httpreq.Cookie(infra.CookieName)
+
+	if err != nil {
+		return connect.NewResponse[miikov1.ProblemPostResponse](
+			&miikov1.ProblemPostResponse{},
+		), err
+	}
+
+	if err = kiwaApiRepository.IsLoggedIn(cookie); err != nil {
+		return connect.NewResponse[miikov1.ProblemPostResponse](
+			&miikov1.ProblemPostResponse{},
+		), err
+	}
+
+	problemId := req.Msg.ProblemId
+	//更新
+	if problemId == "" {
+		problemId = infra.GetNewProblemId()
+	}
+
+	var tagList []*infra.TagDto
+	for _, tag := range req.Msg.GetProblem().GetTagList() {
+		tagList = append(tagList, &infra.TagDto{
+			TopicId: tag.GetTopicId(),
+		})
+	}
+
+	problem := &infra.ProblemDto{
+		ProblemId:          problemId,
+		Url:                req.Msg.GetProblem().GetUrl(),
+		ProblemDisplayName: req.Msg.GetProblem().GetProblemDisplayName(),
+		Estimation:         req.Msg.GetProblem().GetEstimation(),
+		TagList:            tagList,
+	}
+	problemRepository.Upsert(problem)
+	problemRepository.DeleteTag(problemId)
+	for _, tag := range problem.TagList {
+		problemRepository.InsertTag(problemId, tag.TopicId)
+	}
+
+	return connect.NewResponse[miikov1.ProblemPostResponse](
+		&miikov1.ProblemPostResponse{
+			ProblemId: problemId,
+		},
+	), nil
+}

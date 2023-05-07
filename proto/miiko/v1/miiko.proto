@@ -11,6 +11,7 @@ service MiikoService {
   rpc TopicPost (TopicPostRequest) returns (TopicPostResponse) {}
   rpc ProblemListGet (ProblemListGetRequest) returns (ProblemListGetResponse) {}
   rpc ProblemGet (ProblemGetRequest) returns (ProblemGetResponse) {}
+  rpc ProblemPost (ProblemPostRequest) returns (ProblemPostResponse) {}
 }
 message Category {
   string category_id = 1;
@@ -87,4 +88,11 @@ message ProblemGetRequest {
 }
 message ProblemGetResponse {
   Problem problem = 1;
+}
+message ProblemPostRequest {
+  string problem_id = 1;
+  Problem problem = 2;
+}
+message ProblemPostResponse {
+  string problem_id = 1;
 }

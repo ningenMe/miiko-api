@@ -752,3 +752,83 @@ export class ProblemGetResponse extends Message<ProblemGetResponse> {
   }
 }
 
+/**
+ * @generated from message miiko.v1.ProblemPostRequest
+ */
+export class ProblemPostRequest extends Message<ProblemPostRequest> {
+  /**
+   * @generated from field: string problem_id = 1;
+   */
+  problemId = "";
+
+  /**
+   * @generated from field: miiko.v1.Problem problem = 2;
+   */
+  problem?: Problem;
+
+  constructor(data?: PartialMessage<ProblemPostRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "miiko.v1.ProblemPostRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "problem_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "problem", kind: "message", T: Problem },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ProblemPostRequest {
+    return new ProblemPostRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ProblemPostRequest {
+    return new ProblemPostRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ProblemPostRequest {
+    return new ProblemPostRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: ProblemPostRequest | PlainMessage<ProblemPostRequest> | undefined, b: ProblemPostRequest | PlainMessage<ProblemPostRequest> | undefined): boolean {
+    return proto3.util.equals(ProblemPostRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message miiko.v1.ProblemPostResponse
+ */
+export class ProblemPostResponse extends Message<ProblemPostResponse> {
+  /**
+   * @generated from field: string problem_id = 1;
+   */
+  problemId = "";
+
+  constructor(data?: PartialMessage<ProblemPostResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "miiko.v1.ProblemPostResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "problem_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ProblemPostResponse {
+    return new ProblemPostResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ProblemPostResponse {
+    return new ProblemPostResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ProblemPostResponse {
+    return new ProblemPostResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: ProblemPostResponse | PlainMessage<ProblemPostResponse> | undefined, b: ProblemPostResponse | PlainMessage<ProblemPostResponse> | undefined): boolean {
+    return proto3.util.equals(ProblemPostResponse, a, b);
+  }
+}
+

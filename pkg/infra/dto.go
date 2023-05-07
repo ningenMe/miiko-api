@@ -32,6 +32,10 @@ func GetNewTopicId() string {
 	return "topic_" + getRandomString(6)
 }
 
+func GetNewProblemId() string {
+	return "problem_" + getRandomString(6)
+}
+
 type ProblemDto struct {
 	ProblemId          string `db:"problem_id"`
 	Url                string `db:"url"`
