@@ -16,43 +16,16 @@ var topicRepository = infra.TopicRepository{}
 var problemRepository = infra.ProblemRepository{}
 var kiwaApiRepository = infra.KiwaApiRepository{}
 
+var categoryUsecase = CategoryUsecase{}
+
 func (s *MiikoController) CategoryListGet(
 	ctx context.Context,
 	req *connect.Request[miikov1.CategoryListGetRequest],
 ) (*connect.Response[miikov1.CategoryListGetResponse], error) {
 
-	list := categoryRepository.GetList()
-
-	var viewList []*miikov1.Category
-	for _, category := range list {
-
-		var viewTopicList []*miikov1.Topic
-		if req.Msg.IsRequiredTopic {
-			topicList := topicRepository.GetListByCategoryId(category.CategoryId, false)
-			for _, topic := range topicList {
-				viewTopicList = append(viewTopicList, &miikov1.Topic{
-					TopicId:          topic.TopicId,
-					TopicDisplayName: topic.TopicDisplayName,
-					TopicOrder:       topic.TopicOrder,
-				})
-			}
-		}
-
-		viewList = append(viewList, &miikov1.Category{
-			CategoryId:          category.CategoryId,
-			CategoryDisplayName: category.CategoryDisplayName,
-			CategorySystemName:  category.CategorySystemName,
-			CategoryOrder:       category.CategoryOrder,
-			TopicSize:           category.TopicSize,
-			ProblemSize:         category.ProblemSize,
-			TopicList:           viewTopicList,
-		})
-	}
-
-	res := &miikov1.CategoryListGetResponse{
-		CategoryList: viewList,
-	}
-	return connect.NewResponse[miikov1.CategoryListGetResponse](res), nil
+	body, err := categoryUsecase.CategoryListGet(req.Msg.IsRequiredTopic)
+	
+	return connect.NewResponse[miikov1.CategoryListGetResponse](body), err
 }
 
 func (s *MiikoController) CategoryPost(
