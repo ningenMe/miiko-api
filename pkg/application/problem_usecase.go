@@ -1,10 +1,17 @@
 package application
 
 import (
+	"github.com/ningenMe/miiko-api/pkg/domain"
+	"github.com/ningenMe/miiko-api/pkg/infra"
 	miikov1 "github.com/ningenMe/miiko-api/proto/gen_go/v1"
+	"net/http"
 )
 
+const todoTopic = "topic_000266"
+
 type ProblemUsecase struct{}
+
+var problemService = domain.ProblemService{}
 
 func (ProblemUsecase) ProblemListGet(offset int32, limit int32) (*miikov1.ProblemListGetResponse, error) {
 
@@ -62,5 +69,48 @@ func (ProblemUsecase) ProblemGet(problemId string) (*miikov1.ProblemGetResponse,
 			Estimation:         problemDto.Estimation,
 			TagList:            tagViewList,
 		},
+	}, nil
+}
+
+func (ProblemUsecase) ProblemPost(header http.Header, problemId string, problem *miikov1.Problem) (*miikov1.ProblemPostResponse, error) {
+	if err := authorizationService.CheckLoggedIn(header); err != nil {
+		return &miikov1.ProblemPostResponse{}, err
+	}
+
+	//新規IDの払い出しやurlチェックなど
+	problemId, err := problemService.GetProblemId(problemId, problem.Url)
+	if err != nil {
+		return &miikov1.ProblemPostResponse{}, err
+	}
+
+	var tagDtoList []*infra.TagDto
+	for _, tag := range problem.TagList {
+		tagDtoList = append(tagDtoList, &infra.TagDto{
+			TopicId: tag.TopicId,
+		})
+	}
+	//NOTE タグがない場合は未登録タグに入れる
+	if len(tagDtoList) == 0 {
+		tagDtoList = append(tagDtoList, &infra.TagDto{
+			TopicId: todoTopic,
+		})
+	}
+
+	problemDto := &infra.ProblemDto{
+		ProblemId:          problemId,
+		Url:                problem.Url,
+		ProblemDisplayName: problem.ProblemDisplayName,
+		Estimation:         problem.Estimation,
+		TagList:            tagDtoList,
+	}
+
+	problemRepository.Upsert(problemDto)
+	problemRepository.DeleteTag(problemId)
+	for _, tag := range problem.TagList {
+		problemRepository.InsertTag(problemId, tag.TopicId)
+	}
+
+	return &miikov1.ProblemPostResponse{
+		ProblemId: problemId,
 	}, nil
 }
