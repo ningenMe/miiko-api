@@ -99,9 +99,19 @@ export class Topic extends Message<Topic> {
   topicOrder = 0;
 
   /**
-   * @generated from field: repeated miiko.v1.Problem problem_list = 4;
+   * @generated from field: string topic_text = 4;
+   */
+  topicText = "";
+
+  /**
+   * @generated from field: repeated miiko.v1.Problem problem_list = 5;
    */
   problemList: Problem[] = [];
+
+  /**
+   * @generated from field: repeated miiko.v1.Reference reference_list = 6;
+   */
+  referenceList: Reference[] = [];
 
   constructor(data?: PartialMessage<Topic>) {
     super();
@@ -114,7 +124,9 @@ export class Topic extends Message<Topic> {
     { no: 1, name: "topic_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "topic_display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "topic_order", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
-    { no: 4, name: "problem_list", kind: "message", T: Problem, repeated: true },
+    { no: 4, name: "topic_text", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "problem_list", kind: "message", T: Problem, repeated: true },
+    { no: 6, name: "reference_list", kind: "message", T: Reference, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Topic {
@@ -131,6 +143,55 @@ export class Topic extends Message<Topic> {
 
   static equals(a: Topic | PlainMessage<Topic> | undefined, b: Topic | PlainMessage<Topic> | undefined): boolean {
     return proto3.util.equals(Topic, a, b);
+  }
+}
+
+/**
+ * @generated from message miiko.v1.Reference
+ */
+export class Reference extends Message<Reference> {
+  /**
+   * @generated from field: string reference_id = 1;
+   */
+  referenceId = "";
+
+  /**
+   * @generated from field: string url = 2;
+   */
+  url = "";
+
+  /**
+   * @generated from field: string reference_display_name = 3;
+   */
+  referenceDisplayName = "";
+
+  constructor(data?: PartialMessage<Reference>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "miiko.v1.Reference";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "reference_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "reference_display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Reference {
+    return new Reference().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Reference {
+    return new Reference().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Reference {
+    return new Reference().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: Reference | PlainMessage<Reference> | undefined, b: Reference | PlainMessage<Reference> | undefined): boolean {
+    return proto3.util.equals(Reference, a, b);
   }
 }
 

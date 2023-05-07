@@ -15,9 +15,9 @@ var categoryServie = domain.CategoryService{}
 func (TopicUsecase) TopicListGet(categorySystemName string) (*miikov1.TopicListGetResponse, error) {
 
 	//データ取得
-	categoryDto := categoryRepository.Get(categorySystemName)
-	if categoryDto == nil {
-		return &miikov1.TopicListGetResponse{}, fmt.Errorf("category not found")
+	categoryDto, err := categoryRepository.Get(categorySystemName)
+	if err != nil {
+		return &miikov1.TopicListGetResponse{}, err
 	}
 	topicDtoList := topicRepository.GetListByCategoryId(categoryDto.CategoryId, true)
 

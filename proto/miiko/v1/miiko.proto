@@ -27,7 +27,14 @@ message Topic {
   string topic_id = 1;
   string topic_display_name = 2;
   int32 topic_order = 3;
-  repeated Problem problem_list = 4;
+  string topic_text = 4;
+  repeated Problem problem_list = 5;
+  repeated Reference reference_list = 6;
+}
+message Reference {
+  string reference_id = 1;
+  string url = 2;
+  string reference_display_name = 3;
 }
 message Problem {
   string problem_id = 1;

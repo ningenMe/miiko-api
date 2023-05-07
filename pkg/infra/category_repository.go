@@ -28,13 +28,14 @@ func (CategoryRepository) GetList() []*CategoryDto {
 	return list
 }
 
-func (CategoryRepository) Get(categorySystemName string) *CategoryDto {
+func (CategoryRepository) Get(categorySystemName string) (*CategoryDto, error) {
 	rows, err := ComproMysql.NamedQuery(`SELECT category_id, category_display_name, category_system_name, category_order FROM category WHERE category_system_name = :categorySystemName`,
 		map[string]interface{}{
 			"categorySystemName": categorySystemName,
 		})
 	if err != nil {
 		fmt.Println(err)
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -48,9 +49,9 @@ func (CategoryRepository) Get(categorySystemName string) *CategoryDto {
 	}
 
 	if len(list) > 0 {
-		return list[0]
+		return list[0], nil
 	}
-	return nil
+	return nil, fmt.Errorf("category not found")
 }
 
 func (CategoryRepository) Upsert(category *CategoryDto) {
@@ -76,7 +77,10 @@ func (CategoryRepository) Delete(categoryId string) {
 }
 
 func (CategoryRepository) UpdateTopicSizeAndProblemSize(categoryId string) {
+
+	//TODO 依存をどうにかする
 	topicList := topicRepository.GetListByCategoryId(categoryId, true)
+
 	topicSize := len(topicList)
 	problemSize := 0
 	for _, topic := range topicList {

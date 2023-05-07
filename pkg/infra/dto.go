@@ -16,24 +16,14 @@ type CategoryDto struct {
 	ProblemSize         int32  `db:"problem_size"`
 }
 
-func GetNewCategoryId() string {
-	return "category_" + getRandomString(6)
-}
-
 type TopicDto struct {
 	TopicId          string `db:"topic_id"`
 	CategoryId       string `db:"category_id"`
 	TopicDisplayName string `db:"topic_display_name"`
 	TopicOrder       int32  `db:"topic_order"`
+	TopicText        string `db:"topic_text"`
 	ProblemList      []*ProblemDto
-}
-
-func GetNewTopicId() string {
-	return "topic_" + getRandomString(6)
-}
-
-func GetNewProblemId() string {
-	return "problem_" + getRandomString(6)
+	ReferenceList    []*ReferenceDto
 }
 
 type ProblemDto struct {
@@ -45,10 +35,28 @@ type ProblemDto struct {
 }
 
 type TagDto struct {
-	ProblemId        string `db:"problem_id""`
+	ProblemId        string `db:"problem_id"`
 	TopicId          string `db:"topic_id"`
 	CategoryId       string `db:"category_id"`
 	TopicDisplayName string `db:"topic_display_name"`
+}
+
+type ReferenceDto struct {
+	ReferenceId          string `db:"reference_id"`
+	Url                  string `db:"url"`
+	ReferenceDisplayName string `db:"reference_display_name"`
+}
+
+func GetNewCategoryId() string {
+	return "category_" + getRandomString(6)
+}
+
+func GetNewTopicId() string {
+	return "topic_" + getRandomString(6)
+}
+
+func GetNewProblemId() string {
+	return "problem_" + getRandomString(6)
 }
 
 // https://qiita.com/nakaryooo/items/7d269525a288c4b3ecda

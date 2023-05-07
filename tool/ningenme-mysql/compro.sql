@@ -30,14 +30,31 @@ CREATE TABLE `category`
 
 CREATE TABLE `topic`
 (
-    `topic_id`           varchar(255) NOT NULL,
-    `category_id`        varchar(255) NOT NULL,
-    `topic_display_name` varchar(511) NOT NULL,
-    `topic_order`        int(11)      NOT NULL,
-    `created_time`       timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_time`       timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `topic_id`           varchar(255)  NOT NULL,
+    `category_id`        varchar(255)  NOT NULL,
+    `topic_display_name` varchar(511)  NOT NULL,
+    `topic_order`        int(11)       NOT NULL,
+    `topic_text`         varchar(4095) NOT NULL DEFAULT '',
+    `created_time`       timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_time`       timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`topic_id`),
     FOREIGN KEY `category_id_foreign` (`category_id`) REFERENCES `category` (`category_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+# ALTER TABLE topic
+#     ADD `topic_text` varchar(4095) NOT NULL DEFAULT '' AFTER `topic_order`;
+
+CREATE TABLE `reference`
+(
+    `reference_id`           varchar(255) NOT NULL,
+    `topic_id`               varchar(255) NOT NULL,
+    `url`                    varchar(511) NOT NULL,
+    `reference_display_name` varchar(511) NOT NULL,
+    `created_time`           timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_time`           timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`reference_id`),
+    FOREIGN KEY `topic_id_foreign` (`topic_id`) REFERENCES `topic` (`topic_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
