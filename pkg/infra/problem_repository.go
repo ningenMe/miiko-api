@@ -43,7 +43,7 @@ func (ProblemRepository) GetProblemListByTopicId(topicId string, isRequiredTag b
 	return list
 }
 
-func (ProblemRepository) GetProblemList(offset int32, limit int32) []*ProblemDto {
+func (ProblemRepository) GetProblemWithTagList(offset int32, limit int32) []*ProblemDto {
 	var list []*ProblemDto
 
 	rows, err := ComproMysql.NamedQuery(
@@ -77,7 +77,6 @@ func (ProblemRepository) GetProblemList(offset int32, limit int32) []*ProblemDto
 	return list
 }
 
-// TODO ProblemWithTag
 func (ProblemRepository) GetProblemWithTag(problemId string) (*ProblemDto, error) {
 	var dto *ProblemDto
 

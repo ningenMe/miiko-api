@@ -9,7 +9,7 @@ type ProblemUsecase struct{}
 func (ProblemUsecase) ProblemListGet(offset int32, limit int32) (*miikov1.ProblemListGetResponse, error) {
 
 	//データ取得
-	problemDtoList := problemRepository.GetProblemList(offset, limit)
+	problemDtoList := problemRepository.GetProblemWithTagList(offset, limit)
 
 	//データ整形
 	var problemViewList []*miikov1.Problem
