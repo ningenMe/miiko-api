@@ -17,6 +17,7 @@ var problemRepository = infra.ProblemRepository{}
 var kiwaApiRepository = infra.KiwaApiRepository{}
 
 var categoryUsecase = CategoryUsecase{}
+var topicUsecase = TopicUsecase{}
 var authorizationService = domain.AuthorizationService{}
 
 func (s *MiikoController) CategoryListGet(
@@ -46,57 +47,9 @@ func (s *MiikoController) TopicListGet(
 	req *connect.Request[miikov1.TopicListGetRequest],
 ) (*connect.Response[miikov1.TopicListGetResponse], error) {
 
-	categorySystemName := req.Msg.CategorySystemName
-	categoryDto := categoryRepository.Get(categorySystemName)
+	body, err := topicUsecase.TopicListGet(req.Msg.CategorySystemName)
 
-	var list []*infra.TopicDto
-	var category *miikov1.Category
-	if categoryDto != nil {
-		category = &miikov1.Category{
-			CategoryId:          categoryDto.CategoryId,
-			CategorySystemName:  categoryDto.CategorySystemName,
-			CategoryDisplayName: categoryDto.CategoryDisplayName,
-			CategoryOrder:       categoryDto.CategoryOrder,
-		}
-		list = topicRepository.GetListByCategoryId(categoryDto.CategoryId, true)
-	}
-
-	var viewTopicList []*miikov1.Topic
-	for _, topic := range list {
-
-		var viewProblemList []*miikov1.Problem
-		for _, problem := range topic.ProblemList {
-
-			var viewTagList []*miikov1.Tag
-			for _, tag := range problem.TagList {
-				viewTagList = append(viewTagList, &miikov1.Tag{
-					TopicId:          tag.TopicId,
-					CategoryId:       tag.CategoryId,
-					TopicDisplayName: tag.TopicDisplayName,
-				})
-			}
-
-			viewProblemList = append(viewProblemList, &miikov1.Problem{
-				ProblemId:          problem.ProblemId,
-				Url:                problem.Url,
-				ProblemDisplayName: problem.ProblemDisplayName,
-				Estimation:         problem.Estimation,
-				TagList:            viewTagList,
-			})
-		}
-
-		viewTopicList = append(viewTopicList, &miikov1.Topic{
-			TopicId:          topic.TopicId,
-			TopicDisplayName: topic.TopicDisplayName,
-			TopicOrder:       topic.TopicOrder,
-			ProblemList:      viewProblemList,
-		})
-	}
-
-	return connect.NewResponse[miikov1.TopicListGetResponse](&miikov1.TopicListGetResponse{
-		Category:  category,
-		TopicList: viewTopicList,
-	}), nil
+	return connect.NewResponse[miikov1.TopicListGetResponse](body), err
 }
 
 func (s *MiikoController) TopicPost(

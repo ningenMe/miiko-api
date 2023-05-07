@@ -10,16 +10,18 @@ type CategoryUsecase struct{}
 
 func (CategoryUsecase) CategoryListGet(isRequiredTopic bool) (*miikov1.CategoryListGetResponse, error) {
 
+	//データ取得
 	categoryDtoList := categoryRepository.GetList()
 
+	//データ整形
 	var categoryViewList []*miikov1.Category
 	for _, categoryDto := range categoryDtoList {
 
-		var viewTopicList []*miikov1.Topic
+		var topicViewList []*miikov1.Topic
 		if isRequiredTopic {
 			topicList := topicRepository.GetListByCategoryId(categoryDto.CategoryId, false)
 			for _, topic := range topicList {
-				viewTopicList = append(viewTopicList, &miikov1.Topic{
+				topicViewList = append(topicViewList, &miikov1.Topic{
 					TopicId:          topic.TopicId,
 					TopicDisplayName: topic.TopicDisplayName,
 					TopicOrder:       topic.TopicOrder,
@@ -34,7 +36,7 @@ func (CategoryUsecase) CategoryListGet(isRequiredTopic bool) (*miikov1.CategoryL
 			CategoryOrder:       categoryDto.CategoryOrder,
 			TopicSize:           categoryDto.TopicSize,
 			ProblemSize:         categoryDto.ProblemSize,
-			TopicList:           viewTopicList,
+			TopicList:           topicViewList,
 		})
 	}
 
