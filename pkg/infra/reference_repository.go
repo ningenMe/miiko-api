@@ -24,7 +24,7 @@ func (ReferenceRepository) Delete(topicId string) error {
 func (ReferenceRepository) Insert(topicId string, referenceDto *ReferenceDto) error {
 
 	_, err := ComproMysql.NamedExec(`INSERT INTO reference (reference_id, topic_id, url, reference_display_name) 
-                                 VALUES (:referenceId, :topic_id, :url, :referenceDisplayName)                                 
+                                 VALUES (:referenceId, :topicId, :url, :referenceDisplayName)                                 
                                      `,
 		map[string]interface{}{
 			"referenceId":          referenceDto.ReferenceId,
