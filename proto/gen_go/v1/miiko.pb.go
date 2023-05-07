@@ -1144,7 +1144,8 @@ type TopicGetResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Topic *Topic `protobuf:"bytes,1,opt,name=topic,proto3" json:"topic,omitempty"`
+	Category *Category `protobuf:"bytes,1,opt,name=category,proto3" json:"category,omitempty"`
+	Topic    *Topic    `protobuf:"bytes,2,opt,name=topic,proto3" json:"topic,omitempty"`
 }
 
 func (x *TopicGetResponse) Reset() {
@@ -1177,6 +1178,13 @@ func (x *TopicGetResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use TopicGetResponse.ProtoReflect.Descriptor instead.
 func (*TopicGetResponse) Descriptor() ([]byte, []int) {
 	return file_v1_miiko_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *TopicGetResponse) GetCategory() *Category {
+	if x != nil {
+		return x.Category
+	}
+	return nil
 }
 
 func (x *TopicGetResponse) GetTopic() *Topic {
@@ -1320,9 +1328,12 @@ var file_v1_miiko_proto_rawDesc = []byte{
 	0x70, 0x72, 0x6f, 0x62, 0x6c, 0x65, 0x6d, 0x49, 0x64, 0x22, 0x2c, 0x0a, 0x0f, 0x54, 0x6f, 0x70,
 	0x69, 0x63, 0x47, 0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x19, 0x0a, 0x08,
 	0x74, 0x6f, 0x70, 0x69, 0x63, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07,
-	0x74, 0x6f, 0x70, 0x69, 0x63, 0x49, 0x64, 0x22, 0x39, 0x0a, 0x10, 0x54, 0x6f, 0x70, 0x69, 0x63,
-	0x47, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x25, 0x0a, 0x05, 0x74,
-	0x6f, 0x70, 0x69, 0x63, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x6d, 0x69, 0x69,
+	0x74, 0x6f, 0x70, 0x69, 0x63, 0x49, 0x64, 0x22, 0x69, 0x0a, 0x10, 0x54, 0x6f, 0x70, 0x69, 0x63,
+	0x47, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x2e, 0x0a, 0x08, 0x63,
+	0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x12, 0x2e,
+	0x6d, 0x69, 0x69, 0x6b, 0x6f, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72,
+	0x79, 0x52, 0x08, 0x63, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x12, 0x25, 0x0a, 0x05, 0x74,
+	0x6f, 0x70, 0x69, 0x63, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x6d, 0x69, 0x69,
 	0x6b, 0x6f, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x6f, 0x70, 0x69, 0x63, 0x52, 0x05, 0x74, 0x6f, 0x70,
 	0x69, 0x63, 0x32, 0x87, 0x05, 0x0a, 0x0c, 0x4d, 0x69, 0x69, 0x6b, 0x6f, 0x53, 0x65, 0x72, 0x76,
 	0x69, 0x63, 0x65, 0x12, 0x58, 0x0a, 0x0f, 0x43, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72, 0x79, 0x4c,
@@ -1421,28 +1432,29 @@ var file_v1_miiko_proto_depIdxs = []int32{
 	3,  // 9: miiko.v1.ProblemListGetResponse.problem_list:type_name -> miiko.v1.Problem
 	3,  // 10: miiko.v1.ProblemGetResponse.problem:type_name -> miiko.v1.Problem
 	3,  // 11: miiko.v1.ProblemPostRequest.problem:type_name -> miiko.v1.Problem
-	2,  // 12: miiko.v1.TopicGetResponse.topic:type_name -> miiko.v1.Topic
-	5,  // 13: miiko.v1.MiikoService.CategoryListGet:input_type -> miiko.v1.CategoryListGetRequest
-	7,  // 14: miiko.v1.MiikoService.CategoryPost:input_type -> miiko.v1.CategoryPostRequest
-	9,  // 15: miiko.v1.MiikoService.TopicListGet:input_type -> miiko.v1.TopicListGetRequest
-	19, // 16: miiko.v1.MiikoService.TopicGet:input_type -> miiko.v1.TopicGetRequest
-	11, // 17: miiko.v1.MiikoService.TopicPost:input_type -> miiko.v1.TopicPostRequest
-	13, // 18: miiko.v1.MiikoService.ProblemListGet:input_type -> miiko.v1.ProblemListGetRequest
-	15, // 19: miiko.v1.MiikoService.ProblemGet:input_type -> miiko.v1.ProblemGetRequest
-	17, // 20: miiko.v1.MiikoService.ProblemPost:input_type -> miiko.v1.ProblemPostRequest
-	6,  // 21: miiko.v1.MiikoService.CategoryListGet:output_type -> miiko.v1.CategoryListGetResponse
-	8,  // 22: miiko.v1.MiikoService.CategoryPost:output_type -> miiko.v1.CategoryPostResponse
-	10, // 23: miiko.v1.MiikoService.TopicListGet:output_type -> miiko.v1.TopicListGetResponse
-	20, // 24: miiko.v1.MiikoService.TopicGet:output_type -> miiko.v1.TopicGetResponse
-	12, // 25: miiko.v1.MiikoService.TopicPost:output_type -> miiko.v1.TopicPostResponse
-	14, // 26: miiko.v1.MiikoService.ProblemListGet:output_type -> miiko.v1.ProblemListGetResponse
-	16, // 27: miiko.v1.MiikoService.ProblemGet:output_type -> miiko.v1.ProblemGetResponse
-	18, // 28: miiko.v1.MiikoService.ProblemPost:output_type -> miiko.v1.ProblemPostResponse
-	21, // [21:29] is the sub-list for method output_type
-	13, // [13:21] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	1,  // 12: miiko.v1.TopicGetResponse.category:type_name -> miiko.v1.Category
+	2,  // 13: miiko.v1.TopicGetResponse.topic:type_name -> miiko.v1.Topic
+	5,  // 14: miiko.v1.MiikoService.CategoryListGet:input_type -> miiko.v1.CategoryListGetRequest
+	7,  // 15: miiko.v1.MiikoService.CategoryPost:input_type -> miiko.v1.CategoryPostRequest
+	9,  // 16: miiko.v1.MiikoService.TopicListGet:input_type -> miiko.v1.TopicListGetRequest
+	19, // 17: miiko.v1.MiikoService.TopicGet:input_type -> miiko.v1.TopicGetRequest
+	11, // 18: miiko.v1.MiikoService.TopicPost:input_type -> miiko.v1.TopicPostRequest
+	13, // 19: miiko.v1.MiikoService.ProblemListGet:input_type -> miiko.v1.ProblemListGetRequest
+	15, // 20: miiko.v1.MiikoService.ProblemGet:input_type -> miiko.v1.ProblemGetRequest
+	17, // 21: miiko.v1.MiikoService.ProblemPost:input_type -> miiko.v1.ProblemPostRequest
+	6,  // 22: miiko.v1.MiikoService.CategoryListGet:output_type -> miiko.v1.CategoryListGetResponse
+	8,  // 23: miiko.v1.MiikoService.CategoryPost:output_type -> miiko.v1.CategoryPostResponse
+	10, // 24: miiko.v1.MiikoService.TopicListGet:output_type -> miiko.v1.TopicListGetResponse
+	20, // 25: miiko.v1.MiikoService.TopicGet:output_type -> miiko.v1.TopicGetResponse
+	12, // 26: miiko.v1.MiikoService.TopicPost:output_type -> miiko.v1.TopicPostResponse
+	14, // 27: miiko.v1.MiikoService.ProblemListGet:output_type -> miiko.v1.ProblemListGetResponse
+	16, // 28: miiko.v1.MiikoService.ProblemGet:output_type -> miiko.v1.ProblemGetResponse
+	18, // 29: miiko.v1.MiikoService.ProblemPost:output_type -> miiko.v1.ProblemPostResponse
+	22, // [22:30] is the sub-list for method output_type
+	14, // [14:22] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_v1_miiko_proto_init() }

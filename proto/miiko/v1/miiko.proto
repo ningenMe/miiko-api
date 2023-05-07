@@ -101,5 +101,6 @@ message TopicGetRequest {
   string topic_id = 1;
 }
 message TopicGetResponse {
-  Topic topic = 1;
+  Category category = 1;
+  Topic topic = 2;
 }

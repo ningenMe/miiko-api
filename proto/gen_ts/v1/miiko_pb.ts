@@ -874,7 +874,12 @@ export class TopicGetRequest extends Message<TopicGetRequest> {
  */
 export class TopicGetResponse extends Message<TopicGetResponse> {
   /**
-   * @generated from field: miiko.v1.Topic topic = 1;
+   * @generated from field: miiko.v1.Category category = 1;
+   */
+  category?: Category;
+
+  /**
+   * @generated from field: miiko.v1.Topic topic = 2;
    */
   topic?: Topic;
 
@@ -886,7 +891,8 @@ export class TopicGetResponse extends Message<TopicGetResponse> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "miiko.v1.TopicGetResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "topic", kind: "message", T: Topic },
+    { no: 1, name: "category", kind: "message", T: Category },
+    { no: 2, name: "topic", kind: "message", T: Topic },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TopicGetResponse {

@@ -355,9 +355,24 @@ func (s *MiikoController) TopicGet(
 			TagList:            viewTagList,
 		})
 	}
+	categoryList := categoryRepository.GetList()
+	var viewCategory *miikov1.Category
+	for _, category := range categoryList {
+		if category.CategoryId == topic.CategoryId {
+			viewCategory = &miikov1.Category{
+				CategoryId:          category.CategoryId,
+				CategorySystemName:  category.CategorySystemName,
+				CategoryDisplayName: category.CategoryDisplayName,
+				CategoryOrder:       category.CategoryOrder,
+				TopicSize:           category.TopicSize,
+				ProblemSize:         category.ProblemSize,
+			}
+		}
+	}
 
 	return connect.NewResponse[miikov1.TopicGetResponse](
 		&miikov1.TopicGetResponse{
+			Category: viewCategory,
 			Topic: &miikov1.Topic{
 				TopicId:          topic.TopicId,
 				TopicDisplayName: topic.TopicDisplayName,
