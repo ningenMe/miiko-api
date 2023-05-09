@@ -158,6 +158,7 @@ func (TopicUsecase) TopicGet(topicId string) (*miikov1.TopicGetResponse, error) 
 			TopicDisplayName: topicDto.TopicDisplayName,
 			TopicOrder:       topicDto.TopicOrder,
 			TopicText:        topicDto.TopicText,
+			ReferenceList:    referenceViewList,
 			ProblemList:      problemViewList,
 		},
 	}, nil
