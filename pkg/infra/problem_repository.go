@@ -48,7 +48,7 @@ func (ProblemRepository) GetProblemWithTagList(offset int32, limit int32) []*Pro
 	var list []*ProblemDto
 
 	rows, err := ComproMysql.NamedQuery(
-		`SELECT problem_id, url, problem_display_name, estimation FROM problem ORDER BY created_time DESC LIMIT :limit OFFSET :offset`,
+		`SELECT problem_id, url, problem_display_name, estimation FROM problem ORDER BY updated_time DESC LIMIT :limit OFFSET :offset`,
 		map[string]interface{}{
 			"offset": offset,
 			"limit":  limit,
