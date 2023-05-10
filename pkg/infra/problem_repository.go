@@ -161,36 +161,42 @@ func getTagMap(problemIdList []string) map[string][]*TagDto {
 	return mp
 }
 
-func (ProblemRepository) Upsert(problem *ProblemDto) {
+func (ProblemRepository) Upsert(tx *sqlx.Tx, problem *ProblemDto) error {
 
-	_, err := ComproMysql.NamedExec(`INSERT INTO problem (problem_id, url, problem_display_name, estimation) 
+	_, err := tx.NamedExec(`INSERT INTO problem (problem_id, url, problem_display_name, estimation) 
                                  VALUES (:problem_id, :url, :problem_display_name, :estimation) 
                                  ON DUPLICATE KEY UPDATE 
                                     url=VALUES(url), problem_display_name=VALUES(problem_display_name), estimation=VALUES(estimation)                                     
                                      `, problem)
 	if err != nil {
 		fmt.Println(err)
+		return err
 	}
+	return nil
 }
 
-func (ProblemRepository) DeleteTag(problemId string) {
+func (ProblemRepository) DeleteTag(tx *sqlx.Tx, problemId string) error {
 
-	_, err := ComproMysql.NamedExec(`DELETE FROM relation_topic_problem WHERE problem_id = :problemId`,
+	_, err := tx.NamedExec(`DELETE FROM relation_topic_problem WHERE problem_id = :problemId`,
 		map[string]interface{}{
 			"problemId": problemId,
 		})
 	if err != nil {
 		fmt.Println(err)
+		return err
 	}
+	return nil
 }
 
-func (ProblemRepository) InsertTag(problemId string, topicId string) {
-	_, err := ComproMysql.NamedExec(`INSERT INTO relation_topic_problem (problem_id, topic_id) VALUES (:problemId, :topicId) `,
+func (ProblemRepository) InsertTag(tx *sqlx.Tx, problemId string, topicId string) error {
+	_, err := tx.NamedExec(`INSERT INTO relation_topic_problem (problem_id, topic_id) VALUES (:problemId, :topicId) `,
 		map[string]interface{}{
 			"problemId": problemId,
 			"topicId":   topicId,
 		})
 	if err != nil {
 		fmt.Println(err)
+		return err
 	}
+	return nil
 }

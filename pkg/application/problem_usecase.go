@@ -104,10 +104,24 @@ func (ProblemUsecase) ProblemPost(header http.Header, problemId string, problem 
 		TagList:            tagDtoList,
 	}
 
-	problemRepository.Upsert(problemDto)
-	problemRepository.DeleteTag(problemId)
+	tx := infra.ComproMysql.MustBegin()
+	if err := problemRepository.Upsert(tx, problemDto); err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+	problemRepository.DeleteTag(tx, problemId)
+	if err := problemRepository.DeleteTag(tx, problemId); err != nil {
+		tx.Rollback()
+		return nil, err
+	}
 	for _, tag := range problem.TagList {
-		problemRepository.InsertTag(problemId, tag.TopicId)
+		if err := problemRepository.InsertTag(tx, problemId, tag.TopicId); err != nil {
+			tx.Rollback()
+			return nil, err
+		}
+	}
+	if err := tx.Commit(); err != nil {
+		return nil, err
 	}
 
 	return &miikov1.ProblemPostResponse{
