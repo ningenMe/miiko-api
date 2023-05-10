@@ -13,10 +13,10 @@ type ProblemUsecase struct{}
 
 var problemService = domain.ProblemService{}
 
-func (ProblemUsecase) ProblemListGet(offset int32, limit int32) (*miikov1.ProblemListGetResponse, error) {
+func (ProblemUsecase) ProblemListGet(limit int32, offset int32, isDesc bool) (*miikov1.ProblemListGetResponse, error) {
 
 	//データ取得
-	problemDtoList := problemRepository.GetProblemWithTagList(offset, limit)
+	problemDtoList := problemRepository.GetProblemWithTagList(limit, offset, isDesc)
 
 	//データ整形
 	var problemViewList []*miikov1.Problem

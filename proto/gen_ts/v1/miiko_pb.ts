@@ -642,9 +642,9 @@ export class ProblemListGetRequest extends Message<ProblemListGetRequest> {
   limit = 0;
 
   /**
-   * @generated from field: miiko.v1.ProblemListGetRequest.SortType sort_type = 3;
+   * @generated from field: bool isDesc = 3;
    */
-  sortType = ProblemListGetRequest_SortType.UNSPECIFIED;
+  isDesc = false;
 
   constructor(data?: PartialMessage<ProblemListGetRequest>) {
     super();
@@ -656,7 +656,7 @@ export class ProblemListGetRequest extends Message<ProblemListGetRequest> {
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "offset", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 2, name: "limit", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
-    { no: 3, name: "sort_type", kind: "enum", T: proto3.getEnumType(ProblemListGetRequest_SortType) },
+    { no: 3, name: "isDesc", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ProblemListGetRequest {
@@ -675,32 +675,6 @@ export class ProblemListGetRequest extends Message<ProblemListGetRequest> {
     return proto3.util.equals(ProblemListGetRequest, a, b);
   }
 }
-
-/**
- * @generated from enum miiko.v1.ProblemListGetRequest.SortType
- */
-export enum ProblemListGetRequest_SortType {
-  /**
-   * @generated from enum value: SORT_TYPE_UNSPECIFIED = 0;
-   */
-  UNSPECIFIED = 0,
-
-  /**
-   * @generated from enum value: SORT_TYPE_CREATED_TIME = 1;
-   */
-  CREATED_TIME = 1,
-
-  /**
-   * @generated from enum value: SORT_TYPE_ESTIMATION = 2;
-   */
-  ESTIMATION = 2,
-}
-// Retrieve enum metadata with: proto3.getEnumType(ProblemListGetRequest_SortType)
-proto3.util.setEnumType(ProblemListGetRequest_SortType, "miiko.v1.ProblemListGetRequest.SortType", [
-  { no: 0, name: "SORT_TYPE_UNSPECIFIED" },
-  { no: 1, name: "SORT_TYPE_CREATED_TIME" },
-  { no: 2, name: "SORT_TYPE_ESTIMATION" },
-]);
 
 /**
  * @generated from message miiko.v1.ProblemListGetResponse

@@ -77,7 +77,7 @@ func (controller *MiikoController) ProblemListGet(
 	req *connect.Request[miikov1.ProblemListGetRequest],
 ) (*connect.Response[miikov1.ProblemListGetResponse], error) {
 
-	body, err := problemUsecase.ProblemListGet(req.Msg.Offset, req.Msg.Limit)
+	body, err := problemUsecase.ProblemListGet(req.Msg.Limit, req.Msg.Offset, req.Msg.IsDesc)
 
 	return connect.NewResponse[miikov1.ProblemListGetResponse](body), err
 }

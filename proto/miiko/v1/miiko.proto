@@ -81,12 +81,7 @@ message TopicPostResponse {
 message ProblemListGetRequest {
   int32 offset = 1;
   int32 limit = 2;
-  enum SortType {
-    SORT_TYPE_UNSPECIFIED = 0;
-    SORT_TYPE_CREATED_TIME = 1;
-    SORT_TYPE_ESTIMATION = 2;
-  }
-  SortType sort_type = 3;
+  bool isDesc = 3;
 }
 message ProblemListGetResponse {
   repeated Problem problem_list = 1;
