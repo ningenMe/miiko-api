@@ -9,12 +9,12 @@ type TopicRepository struct{}
 
 var problemRepository = ProblemRepository{}
 
-// TODO メソッドを分解する
-func (TopicRepository) GetListByCategoryId(categoryId string, isRequiredProblem bool) []*TopicDto {
+// TODO EOL
+func (TopicRepository) GetByCategoryId(categoryId string, isRequiredProblem bool) []*TopicDto {
 	var list []*TopicDto
 
 	rows, err := ComproMysql.NamedQuery(
-		`SELECT topic_id, category_id, topic_display_name, topic_order FROM topic WHERE category_id = :categoryId ORDER BY topic_order ASC`,
+		`SELECT topic_id, category_id, topic_display_name, topic_order, topic_text FROM topic WHERE category_id = :categoryId ORDER BY topic_order ASC`,
 		map[string]interface{}{
 			"categoryId": categoryId,
 		})
@@ -36,6 +36,31 @@ func (TopicRepository) GetListByCategoryId(categoryId string, isRequiredProblem 
 	}
 
 	return list
+}
+
+func (TopicRepository) GetListByCategoryId(categoryId string) ([]*TopicDto, error) {
+	var list []*TopicDto
+
+	rows, err := ComproMysql.NamedQuery(
+		`SELECT topic_id, category_id, topic_display_name, topic_order, topic_text FROM topic WHERE category_id = :categoryId ORDER BY topic_order ASC`,
+		map[string]interface{}{
+			"categoryId": categoryId,
+		})
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		c := &TopicDto{}
+		if err = rows.StructScan(c); err != nil {
+			fmt.Println(err)
+		}
+		list = append(list, c)
+	}
+
+	return list, nil
 }
 
 func (TopicRepository) Get(topicId string) (*TopicDto, error) {

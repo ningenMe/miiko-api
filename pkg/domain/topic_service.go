@@ -36,3 +36,18 @@ func (TopicService) GetWithProblemWithTag(topicId string) (*infra.TopicDto, erro
 
 	return topicDto, nil
 }
+
+func (TopicService) GetListWithProblemWithTagByCategoryId(categoryId string) ([]*infra.TopicDto, error) {
+	topicDtoList, err := topicRepository.GetListByCategoryId(categoryId)
+	if err != nil {
+		return nil, err
+	}
+	for _, topicDto := range topicDtoList {
+		//TODO ハンドリングを直す
+		topicDto.ProblemList = problemRepository.GetProblemListByTopicId(topicDto.TopicId, false)
+		//TODO エラー拾うと空の時おかしくなる気がする、後で修正
+		topicDto.ReferenceList, _ = referenceRepository.Get(topicDto.TopicId)
+	}
+
+	return topicDtoList, nil
+}

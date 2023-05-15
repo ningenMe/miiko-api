@@ -20,7 +20,10 @@ func (TopicUsecase) TopicListGet(categorySystemName string) (*miikov1.TopicListG
 	if err != nil {
 		return &miikov1.TopicListGetResponse{}, err
 	}
-	topicDtoList := topicRepository.GetListByCategoryId(categoryDto.CategoryId, true)
+	topicDtoList, err := topicService.GetListWithProblemWithTagByCategoryId(categoryDto.CategoryId)
+	if err != nil {
+		return &miikov1.TopicListGetResponse{}, err
+	}
 
 	//データ整形
 	categoryView := &miikov1.Category{
@@ -53,12 +56,22 @@ func (TopicUsecase) TopicListGet(categorySystemName string) (*miikov1.TopicListG
 				TagList:            tagViewList,
 			})
 		}
+		var referenceViewList []*miikov1.Reference
+		for _, referenceDto := range topicDto.ReferenceList {
+			referenceViewList = append(referenceViewList, &miikov1.Reference{
+				ReferenceId:          referenceDto.ReferenceId,
+				Url:                  referenceDto.Url,
+				ReferenceDisplayName: referenceDto.ReferenceDisplayName,
+			})
+		}
 
 		topicViewList = append(topicViewList, &miikov1.Topic{
 			TopicId:          topicDto.TopicId,
 			TopicDisplayName: topicDto.TopicDisplayName,
 			TopicOrder:       topicDto.TopicOrder,
+			TopicText:        topicDto.TopicText,
 			ProblemList:      problemViewList,
+			ReferenceList:    referenceViewList,
 		})
 	}
 

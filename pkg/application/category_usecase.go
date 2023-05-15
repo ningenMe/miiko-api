@@ -19,7 +19,7 @@ func (CategoryUsecase) CategoryListGet(isRequiredTopic bool) (*miikov1.CategoryL
 
 		var topicViewList []*miikov1.Topic
 		if isRequiredTopic {
-			topicList := topicRepository.GetListByCategoryId(categoryDto.CategoryId, false)
+			topicList := topicRepository.GetByCategoryId(categoryDto.CategoryId, false)
 			for _, topic := range topicList {
 				topicViewList = append(topicViewList, &miikov1.Topic{
 					TopicId:          topic.TopicId,
