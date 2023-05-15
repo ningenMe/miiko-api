@@ -1,6 +1,9 @@
 package infra
 
-import "crypto/rand"
+import (
+	"crypto/rand"
+	"time"
+)
 
 const (
 	chars      = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -45,6 +48,19 @@ type ReferenceDto struct {
 	ReferenceId          string `db:"reference_id"`
 	Url                  string `db:"url"`
 	ReferenceDisplayName string `db:"reference_display_name"`
+}
+
+type StatisticsDto struct {
+	CategorySize                  int32     `db:"category_size"`
+	TopicSize                     int32     `db:"topic_size"`
+	ProblemSize                   int32     `db:"problem_size"`
+	TagSize                       int32     `db:"tag_size"`
+	ReferenceSize                 int32     `db:"reference_size"`
+	LastUpdatedCategoryTimestamp  time.Time `db:"category_timestamp"`
+	LastUpdatedTopicTimestamp     time.Time `db:"topic_timestamp"`
+	LastUpdatedProblemTimestamp   time.Time `db:"problem_timestamp"`
+	LastUpdatedTagTimestamp       time.Time `db:"tag_timestamp"`
+	LastUpdatedReferenceTimestamp time.Time `db:"reference_timestamp"`
 }
 
 func GetNewCategoryId() string {

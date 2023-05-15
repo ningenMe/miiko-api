@@ -4,7 +4,7 @@
 // @ts-nocheck
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
-import { Message, proto3 } from "@bufbuild/protobuf";
+import { Message, proto3, Timestamp } from "@bufbuild/protobuf";
 
 /**
  * @generated from message miiko.v1.Category
@@ -642,7 +642,7 @@ export class ProblemListGetRequest extends Message<ProblemListGetRequest> {
   limit = 0;
 
   /**
-   * @generated from field: bool isDesc = 3;
+   * @generated from field: bool is_desc = 3;
    */
   isDesc = false;
 
@@ -656,7 +656,7 @@ export class ProblemListGetRequest extends Message<ProblemListGetRequest> {
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "offset", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 2, name: "limit", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
-    { no: 3, name: "isDesc", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 3, name: "is_desc", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ProblemListGetRequest {
@@ -944,6 +944,128 @@ export class TopicGetResponse extends Message<TopicGetResponse> {
 
   static equals(a: TopicGetResponse | PlainMessage<TopicGetResponse> | undefined, b: TopicGetResponse | PlainMessage<TopicGetResponse> | undefined): boolean {
     return proto3.util.equals(TopicGetResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message miiko.v1.StatisticsGetRequest
+ */
+export class StatisticsGetRequest extends Message<StatisticsGetRequest> {
+  constructor(data?: PartialMessage<StatisticsGetRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "miiko.v1.StatisticsGetRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): StatisticsGetRequest {
+    return new StatisticsGetRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): StatisticsGetRequest {
+    return new StatisticsGetRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): StatisticsGetRequest {
+    return new StatisticsGetRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: StatisticsGetRequest | PlainMessage<StatisticsGetRequest> | undefined, b: StatisticsGetRequest | PlainMessage<StatisticsGetRequest> | undefined): boolean {
+    return proto3.util.equals(StatisticsGetRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message miiko.v1.StatisticsGetResponse
+ */
+export class StatisticsGetResponse extends Message<StatisticsGetResponse> {
+  /**
+   * @generated from field: int32 category_size = 1;
+   */
+  categorySize = 0;
+
+  /**
+   * @generated from field: int32 topic_size = 2;
+   */
+  topicSize = 0;
+
+  /**
+   * @generated from field: int32 problem_size = 3;
+   */
+  problemSize = 0;
+
+  /**
+   * @generated from field: int32 tag_size = 4;
+   */
+  tagSize = 0;
+
+  /**
+   * @generated from field: int32 reference_size = 5;
+   */
+  referenceSize = 0;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp last_updated_category_timestamp = 6;
+   */
+  lastUpdatedCategoryTimestamp?: Timestamp;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp last_updated_topic_timestamp = 7;
+   */
+  lastUpdatedTopicTimestamp?: Timestamp;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp last_updated_problem_timestamp = 8;
+   */
+  lastUpdatedProblemTimestamp?: Timestamp;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp last_updated_tag_timestamp = 9;
+   */
+  lastUpdatedTagTimestamp?: Timestamp;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp last_updated_reference_timestamp = 10;
+   */
+  lastUpdatedReferenceTimestamp?: Timestamp;
+
+  constructor(data?: PartialMessage<StatisticsGetResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "miiko.v1.StatisticsGetResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "category_size", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: "topic_size", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 3, name: "problem_size", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 4, name: "tag_size", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 5, name: "reference_size", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 6, name: "last_updated_category_timestamp", kind: "message", T: Timestamp },
+    { no: 7, name: "last_updated_topic_timestamp", kind: "message", T: Timestamp },
+    { no: 8, name: "last_updated_problem_timestamp", kind: "message", T: Timestamp },
+    { no: 9, name: "last_updated_tag_timestamp", kind: "message", T: Timestamp },
+    { no: 10, name: "last_updated_reference_timestamp", kind: "message", T: Timestamp },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): StatisticsGetResponse {
+    return new StatisticsGetResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): StatisticsGetResponse {
+    return new StatisticsGetResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): StatisticsGetResponse {
+    return new StatisticsGetResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: StatisticsGetResponse | PlainMessage<StatisticsGetResponse> | undefined, b: StatisticsGetResponse | PlainMessage<StatisticsGetResponse> | undefined): boolean {
+    return proto3.util.equals(StatisticsGetResponse, a, b);
   }
 }
 

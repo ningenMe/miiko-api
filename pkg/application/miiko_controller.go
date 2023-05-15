@@ -18,6 +18,7 @@ var problemRepository = infra.ProblemRepository{}
 var categoryUsecase = CategoryUsecase{}
 var topicUsecase = TopicUsecase{}
 var problemUsecase = ProblemUsecase{}
+var statisticsUsecase = StatisticsUsecase{}
 var authorizationService = domain.AuthorizationService{}
 
 func (controller *MiikoController) CategoryListGet(
@@ -100,4 +101,14 @@ func (controller *MiikoController) ProblemPost(
 	body, err := problemUsecase.ProblemPost(req.Header(), req.Msg.ProblemId, req.Msg.GetProblem())
 
 	return connect.NewResponse[miikov1.ProblemPostResponse](body), err
+}
+
+func (controller *MiikoController) StatisticsGet(
+	ctx context.Context,
+	req *connect.Request[miikov1.StatisticsGetRequest],
+) (*connect.Response[miikov1.StatisticsGetResponse], error) {
+
+	body, err := statisticsUsecase.StatisticsGet()
+
+	return connect.NewResponse[miikov1.StatisticsGetResponse](body), err
 }
