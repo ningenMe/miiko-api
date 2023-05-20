@@ -1069,3 +1069,77 @@ export class StatisticsGetResponse extends Message<StatisticsGetResponse> {
   }
 }
 
+/**
+ * @generated from message miiko.v1.UrlGetRequest
+ */
+export class UrlGetRequest extends Message<UrlGetRequest> {
+  /**
+   * @generated from field: string url = 1;
+   */
+  url = "";
+
+  constructor(data?: PartialMessage<UrlGetRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "miiko.v1.UrlGetRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UrlGetRequest {
+    return new UrlGetRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UrlGetRequest {
+    return new UrlGetRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UrlGetRequest {
+    return new UrlGetRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UrlGetRequest | PlainMessage<UrlGetRequest> | undefined, b: UrlGetRequest | PlainMessage<UrlGetRequest> | undefined): boolean {
+    return proto3.util.equals(UrlGetRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message miiko.v1.UrlGetResponse
+ */
+export class UrlGetResponse extends Message<UrlGetResponse> {
+  /**
+   * @generated from field: string title = 1;
+   */
+  title = "";
+
+  constructor(data?: PartialMessage<UrlGetResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "miiko.v1.UrlGetResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UrlGetResponse {
+    return new UrlGetResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UrlGetResponse {
+    return new UrlGetResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UrlGetResponse {
+    return new UrlGetResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UrlGetResponse | PlainMessage<UrlGetResponse> | undefined, b: UrlGetResponse | PlainMessage<UrlGetResponse> | undefined): boolean {
+    return proto3.util.equals(UrlGetResponse, a, b);
+  }
+}
+

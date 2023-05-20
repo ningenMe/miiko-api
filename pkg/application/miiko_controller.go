@@ -20,6 +20,7 @@ var topicUsecase = TopicUsecase{}
 var problemUsecase = ProblemUsecase{}
 var statisticsUsecase = StatisticsUsecase{}
 var authorizationService = domain.AuthorizationService{}
+var urlUsecase = UrlUsecase{}
 
 func (controller *MiikoController) CategoryListGet(
 	ctx context.Context,
@@ -111,4 +112,14 @@ func (controller *MiikoController) StatisticsGet(
 	body, err := statisticsUsecase.StatisticsGet()
 
 	return connect.NewResponse[miikov1.StatisticsGetResponse](body), err
+}
+
+func (controller *MiikoController) UrlGet(
+	ctx context.Context,
+	req *connect.Request[miikov1.UrlGetRequest],
+) (*connect.Response[miikov1.UrlGetResponse], error) {
+
+	body, err := urlUsecase.UrlGet(req.Header(), req.Msg.Url)
+
+	return connect.NewResponse[miikov1.UrlGetResponse](body), err
 }
